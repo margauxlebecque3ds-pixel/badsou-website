@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BADSOU — Gravure & Impression 3D · Bar-le-Duc</title>
+<style>
+/* ── RESET & VARS ─────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --gold:       #c9a96e;
+  --gold-light: #e8c98a;
+  --gold-dark:  #8a6d3b;
+  --gold-glow:  rgba(201,169,110,0.18);
+  --dark:       #080705;
+  --dark2:      #0f0d0a;
+  --dark3:      #151210;
+  --text:       #e0d8cc;
+  --muted:      #8a7a6a;
+  --ease:       cubic-bezier(0.4,0,0.2,1);
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--dark);
+  color: var(--text);
+  font-family: 'Georgia', 'Times New Roman', serif;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
+
+/* ── NAV ──────────────────────────────────────────────────────── */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 22px 60px;
+  transition: background 0.5s, padding 0.4s;
+}
+#navbar.scrolled {
+  background: rgba(8,7,5,0.96);
+  padding: 14px 60px;
+  border-bottom: 1px solid rgba(201,169,110,0.15);
+  backdrop-filter: blur(12px);
+}
+.nav-logo {
+  display: inline-flex; align-items: center;
+  text-decoration: none;
+}
+.nav-logo img {
+  height: 70px; width: auto; display: block; opacity: 1;
+  filter: brightness(0) invert(1) sepia(0.3) saturate(2) brightness(1.15);
+  transition: opacity 0.3s;
+}
+.nav-logo:hover img { opacity: 0.75; }
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+  color: #a09080; text-decoration: none;
+  font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+  transition: color 0.3s; position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+  height: 1px; background: var(--gold);
+  transform: scaleX(0); transition: transform 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-burger {
+  display: none; flex-direction: column; gap: 5px; cursor: pointer;
+  background: none; border: none; padding: 4px;
+}
+.nav-burger span { display: block; width: 24px; height: 1.5px; background: var(--gold); transition: all 0.3s; }
+
+/* ── DIVIDER ──────────────────────────────────────────────────── */
+.divider { height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); }
+
+/* ── HERO ─────────────────────────────────────────────────────── */
+#hero {
+  position: relative; width: 100%; height: 100vh;
+  overflow: hidden;
+  background: url('images/hero.jpg') center/cover no-repeat;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: calc(25vh - 80px);
+}
+#hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(3,1,2,0.55);
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+  animation: heroFadeIn 0.8s ease both;
+}
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-separator { display: none; }
+.hero-tagline {
+  font-size: 1.1rem; letter-spacing: 0.05em;
+  color: var(--gold); font-style: italic;
+  white-space: nowrap; margin-bottom: 30px;
+}
+.hero-btn {
+  display: inline-block;
+  border: 1px solid rgba(201,169,110,0.5);
+  color: #c9a96e;
+  background: transparent;
+  padding: 14px 45px;
+  font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase;
+  text-decoration: none; cursor: pointer;
+  transition: background 0.3s;
+}
+.hero-btn:hover { background: rgba(201,169,110,0.1); }
+
+/* ── ABOUT ────────────────────────────────────────────────────── */
+#about {
+  background: var(--dark2); padding: 120px 60px;
+  position: relative; overflow: hidden;
+}
+#about::before {
+  content: '';
+  position: absolute; top: -200px; right: -200px;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,169,110,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.about-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1.4fr; gap: 90px; align-items: start;
+}
+.about-img-wrap { position: relative; }
+.about-img-wrap::before {
+  content: ''; position: absolute; top: -16px; left: -16px; right: 16px; bottom: 16px;
+  border: 1px solid rgba(201,169,110,0.3); pointer-events: none; z-index: 0;
+}
+.about-img {
+  width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: top center;
+  display: block; position: relative; z-index: 1;
+  filter: brightness(0.92) contrast(1.05) sepia(0.08);
+}
+.about-badge {
+  position: absolute; bottom: -20px; right: -20px; z-index: 2;
+  background: var(--gold); color: var(--dark);
+  font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+  padding: 12px 18px; font-weight: 700;
+}
+.about-text .eyebrow {
+  font-size: 0.68rem; letter-spacing: 0.48em; text-transform: uppercase;
+  color: var(--gold); display: block; margin-bottom: 18px;
+}
+.about-text h2 { font-size: clamp(2rem, 3.5vw, 2.8rem); color: #fff; line-height: 1.2; margin-bottom: 8px; }
+.about-text h2 em { color: var(--gold); font-style: normal; }
+.about-name {
+  font-size: 0.75rem; letter-spacing: 0.3em; color: var(--muted);
+  text-transform: uppercase; margin-bottom: 28px; display: block;
+}
+.gold-line { width: 50px; height: 2px; background: var(--gold); margin: 18px 0; }
+.about-text p {
+  color: #a09080; font-size: 0.88rem; line-height: 1.55;
+  margin: 0 0 5px;
+}
+.about-text p:last-child { margin-bottom: 0; }
+/* Separator between the two text blocks */
+.about-text .gold-line { margin: 16px 0; }
+
+
+/* ── CATALOGUE ────────────────────────────────────────────────── */
+#catalogue {
+  background: var(--dark); padding: 110px 0 80px;
+}
+.catalogue-header {
+  text-align: center; padding: 0 40px 80px;
+}
+.catalogue-eyebrow {
+  display: block; font-size: 0.68rem; letter-spacing: 0.55em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 22px;
+}
+.catalogue-title {
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 0 60px rgba(201,169,110,0.15);
+}
+.catalogue-title em { color: var(--gold); font-style: normal; }
+.catalogue-sub {
+  margin-top: 18px; font-size: 0.88rem; color: var(--muted);
+  letter-spacing: 0.12em; font-style: italic;
+}
+
+/* ── CAROUSEL CATEGORY ────────────────────────────────────────── */
+.carousel-category {
+  padding: 0 0 70px;
+  position: relative;
+}
+.carousel-category + .carousel-category {
+  border-top: 1px solid rgba(201,169,110,0.08);
+  padding-top: 60px;
+}
+.carousel-cat-header {
+  display: flex; align-items: baseline; gap: 24px;
+  padding: 0 80px 36px;
+}
+.carousel-cat-title {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  letter-spacing: 0.35em; text-transform: uppercase; color: #fff;
+  font-weight: 400;
+}
+.carousel-cat-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(to right, rgba(201,169,110,0.35), transparent);
+}
+.carousel-cat-count {
+  font-size: 0.65rem; letter-spacing: 0.3em; color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* Carousel wrapper */
+.carousel-outer {
+  position: relative;
+}
+.carousel-viewport {
+  overflow: hidden;
+  padding: 30px 0 40px;
+  position: relative;
+}
+/* Edge fade overlays */
+.carousel-viewport::before,
+.carousel-viewport::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0; width: 80px; z-index: 5;
+  pointer-events: none;
+}
+.carousel-viewport::before {
+  left: 0;
+  background: linear-gradient(to right, var(--dark) 0%, transparent 100%);
+}
+.carousel-viewport::after {
+  right: 0;
+  background: linear-gradient(to left, var(--dark) 0%, transparent 100%);
+}
+.carousel-track {
+  display: flex;
+  gap: 28px;
+  /* NO padding here — JS handles all positioning */
+  transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+  will-change: transform;
+  align-items: center;
+}
+
+/* Cards */
+.c-card {
+  flex: 0 0 300px;
+  background: var(--dark2);
+  border: 1px solid rgba(201,169,110,0.1);
+  cursor: pointer;
+  transition: transform 0.5s var(--ease), border-color 0.4s, box-shadow 0.4s, opacity 0.4s;
+  transform: scale(0.86);
+  opacity: 0.5;
+  position: relative;
+  overflow: hidden;
+}
+.c-card.active {
+  transform: scale(1);
+  opacity: 1;
+  border-color: var(--gold);
+  box-shadow: 0 8px 60px rgba(201,169,110,0.2), 0 0 0 1px rgba(201,169,110,0.1);
+}
+.c-card:not(.active):hover {
+  opacity: 0.75;
+  transform: scale(0.9);
+}
+.c-card-img {
+  width: 100%; aspect-ratio: 4/3; overflow: hidden;
+  position: relative;
+}
+.c-card-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block;
+  transition: transform 0.6s var(--ease), filter 0.5s;
+  filter: brightness(0.88) contrast(1.05);
+}
+.c-card.active .c-card-img img {
+  transform: scale(1.04);
+  filter: brightness(1) contrast(1.08) saturate(1.08);
+}
+.c-card-info {
+  padding: 18px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px;
+  background: linear-gradient(to bottom, var(--dark2), rgba(15,13,10,0.95));
+}
+.c-card-name {
+  font-size: 0.82rem; color: var(--text);
+  letter-spacing: 0.04em; line-height: 1.35;
+  flex: 1;
+}
+.c-card-price {
+  flex-shrink: 0;
+  background: var(--gold);
+  color: var(--dark);
+  font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 5px 12px;
+  white-space: nowrap;
+  font-family: Georgia, serif;
+}
+.c-card.active .c-card-name { color: #fff; }
+
+/* Active card glow strip at top */
+.c-card.active::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  z-index: 1;
+}
+
+/* Arrow buttons */
+.carousel-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 52px; height: 52px;
+  background: rgba(10,8,6,0.85);
+  border: 1px solid rgba(201,169,110,0.3);
+  color: var(--gold);
+  font-size: 1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.3s, border-color 0.3s, transform 0.3s;
+  z-index: 20;
+  backdrop-filter: blur(6px);
+}
+.carousel-btn:hover {
+  background: rgba(201,169,110,0.12);
+  border-color: var(--gold);
+}
+.carousel-btn:active { transform: translateY(-50%) scale(0.94); }
+.carousel-btn-prev { left: 20px; }
+.carousel-btn-next { right: 20px; }
+.carousel-btn:disabled { opacity: 0.2; pointer-events: none; }
+
+/* Dots indicator */
+.carousel-dots {
+  display: flex; justify-content: center; gap: 8px;
+  padding-top: 4px;
+}
+.carousel-dot {
+  width: 20px; height: 2px; background: rgba(201,169,110,0.2);
+  transition: background 0.3s, width 0.3s;
+  cursor: pointer;
+}
+.carousel-dot.active { background: var(--gold); width: 36px; }
+
+/* ── TARIFS ───────────────────────────────────────────────────── */
+#tarifs {
+  background: var(--dark2); padding: 100px 60px;
+  position: relative; overflow: hidden;
+}
+#tarifs::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(201,169,110,0.04) 0%, transparent 65%);
+}
+.tarifs-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+.section-eyebrow {
+  display: block; font-size: 0.68rem; letter-spacing: 0.5em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
+}
+.section-title { font-size: clamp(2rem, 4vw, 3rem); color: #fff; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px; }
+.section-sub { color: var(--muted); font-size: 0.92rem; margin-bottom: 50px; }
+.price-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2px; }
+.price-card {
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(201,169,110,0.12);
+  padding: 36px 30px; position: relative; overflow: hidden;
+  transition: background 0.4s, border-color 0.4s, transform 0.4s;
+}
+.price-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  transform: scaleX(0); transition: transform 0.4s;
+}
+.price-card:hover { background: rgba(201,169,110,0.04); border-color: rgba(201,169,110,0.35); transform: translateY(-4px); }
+.price-card:hover::before { transform: scaleX(1); }
+.price-category { font-size: 0.58rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 14px; }
+.price-name { font-size: 1rem; color: var(--text); letter-spacing: 0.05em; margin-bottom: 18px; }
+.price-amount { font-size: 2.2rem; color: var(--gold); font-weight: 700; }
+.price-amount span { font-size: 0.9rem; color: var(--muted); margin-left: 6px; }
+.price-note { font-size: 0.75rem; color: var(--muted); margin-top: 10px; font-style: italic; }
+
+/* ── CONTACT ──────────────────────────────────────────────────── */
+#contact {
+  background: var(--dark); padding: 130px 60px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.contact-glow {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,169,110,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.contact-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+.contact-title { font-size: clamp(2.5rem, 6vw, 5rem); color: #fff; letter-spacing: 0.15em; text-transform: uppercase; line-height: 1; margin-bottom: 20px; }
+.contact-title em { color: var(--gold); font-style: normal; display: block; }
+.contact-sub { color: var(--muted); font-size: 1rem; line-height: 1.9; margin-bottom: 60px; }
+.contact-links { display: flex; justify-content: center; gap: 70px; flex-wrap: wrap; margin-bottom: 60px; }
+.contact-link { text-decoration: none; transition: transform 0.3s; display: block; }
+.contact-link:hover { transform: translateY(-4px); }
+.cl-label { display: block; font-size: 0.6rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.cl-value { font-size: 1.05rem; color: var(--text); letter-spacing: 0.08em; }
+.contact-cta {
+  display: inline-block; padding: 16px 48px;
+  border: 1px solid var(--gold); color: var(--gold);
+  font-family: inherit; font-size: 0.7rem; letter-spacing: 0.4em;
+  text-transform: uppercase; text-decoration: none;
+  transition: background 0.35s, color 0.35s; cursor: pointer; background: transparent;
+}
+.contact-cta:hover { background: var(--gold); color: var(--dark); }
+
+/* ── FOOTER ───────────────────────────────────────────────────── */
+footer {
+  background: var(--dark); border-top: 1px solid rgba(201,169,110,0.12);
+  padding: 36px 60px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+}
+.footer-logo { font-size: 1.1rem; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; }
+.footer-copy { font-size: 0.68rem; letter-spacing: 0.12em; color: #3a3028; }
+.footer-tagline { font-size: 0.68rem; letter-spacing: 0.18em; color: var(--gold-dark); font-style: italic; }
+
+/* ── LIGHTBOX ─────────────────────────────────────────────────── */
+#lightbox {
+  position: fixed; inset: 0; z-index: 3000;
+  background: rgba(4,3,2,0.97);
+  display: none; align-items: center; justify-content: center; cursor: zoom-out;
+}
+#lightbox.open { display: flex; animation: lbFade 0.3s ease; }
+@keyframes lbFade { from { opacity: 0; } to { opacity: 1; } }
+#lightbox img {
+  max-width: 90vw; max-height: 86vh; object-fit: contain;
+  box-shadow: 0 0 80px rgba(0,0,0,0.8);
+  border: 1px solid rgba(201,169,110,0.2);
+  animation: lbScale 0.3s var(--ease);
+  pointer-events: none;
+}
+@keyframes lbScale { from { transform: scale(0.92); } to { transform: scale(1); } }
+#lightbox-close {
+  position: absolute; top: 28px; right: 36px;
+  font-size: 1.2rem; color: var(--gold); cursor: pointer;
+  background: none; border: none; font-family: inherit;
+  letter-spacing: 0.15em; opacity: 0.7; transition: opacity 0.2s;
+  z-index: 1;
+}
+#lightbox-close:hover { opacity: 1; }
+.lb-meta {
+  position: absolute; bottom: 32px; left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+.lb-name { font-size: 0.85rem; letter-spacing: 0.15em; color: var(--text); }
+.lb-price {
+  display: inline-block; background: var(--gold); color: var(--dark);
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em;
+  padding: 5px 16px; margin-top: 10px;
+}
+.lb-arrows {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 100%; display: flex; justify-content: space-between;
+  padding: 0 20px; pointer-events: none;
+}
+.lb-arrow {
+  width: 48px; height: 48px;
+  background: rgba(10,8,6,0.8); border: 1px solid rgba(201,169,110,0.3);
+  color: var(--gold); font-size: 1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.3s; pointer-events: all;
+}
+.lb-arrow:hover { background: rgba(201,169,110,0.15); }
+
+/* ── ANIMATIONS ───────────────────────────────────────────────── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scrollPulse { 0%,100% { opacity: 0.2; } 50% { opacity: 1; } }
+.reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.22s; }
+.reveal-delay-3 { transition-delay: 0.34s; }
+
+/* ── RESPONSIVE ───────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  #navbar { padding: 16px 24px; }
+  #navbar.scrolled { padding: 12px 24px; }
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .about-inner { grid-template-columns: 1fr; gap: 50px; }
+  #about, #tarifs, #contact { padding: 70px 28px; }
+  footer { flex-direction: column; text-align: center; padding: 30px 24px; }
+  .contact-links { gap: 36px; }
+  .carousel-cat-header { padding: 0 60px 28px; }
+  .carousel-btn-prev { left: 8px; }
+  .carousel-btn-next { right: 8px; }
+  .c-card { flex: 0 0 220px; }
+  .carousel-track { gap: 18px; }
+}
+@media (max-width: 540px) {
+  .c-card { flex: 0 0 180px; }
+  .carousel-track { gap: 14px; }
+  .catalogue-title { font-size: clamp(2.5rem, 10vw, 5rem); }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────────────── -->
+<nav id="navbar">
+  <a class="nav-logo" href="#hero">
+    <img src="images/logo.png" alt="BADSOU" onerror="this.src='images/logo.jpg'" style="height:40px;width:auto;filter:invert(72%) sepia(55%) saturate(500%) hue-rotate(5deg) brightness(95%);" >
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">L'Artisan</a></li>
+    <li><a href="#catalogue">Catalogue</a></li>
+    <li><a href="#tarifs">Tarifs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-inner">
+    <p class="hero-tagline">Fabriqué ici, offert partout.</p>
+    <a class="hero-btn" href="#catalogue">DÉCOUVRIR</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── ABOUT ─────────────────────────────────────────────────────── -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-img-wrap reveal">
+      <img src="images/noam.jpg" alt="Noam Mauvais — fondateur BADSOU" class="about-img">
+      <div class="about-badge">Fondateur</div>
+    </div>
+    <div class="about-text">
+      <span class="eyebrow">L'artisan derrière la marque</span>
+      <h2>Noam <em>Mauvais</em></h2>
+      <span class="about-name">Ingénieur & Créateur · Bar-le-Duc</span>
+      <div class="gold-line"></div>
+      <p class="reveal reveal-delay-1">Je suis Noam — ingénieur de formation, créateur par passion.</p>
+      <p class="reveal reveal-delay-1">Dans mon atelier de Bar-le-Duc, je façonne des objets personnalisés en impression 3D et en gravure de précision. Chaque pièce est pensée comme une signature : élégante, maîtrisée, unique.</p>
+      <p class="reveal reveal-delay-1">Je ne fabrique pas des objets. Je matérialise des idées, des souvenirs, des émotions — et je les transforme en pièces décoratives qui durent.</p>
+      <p class="reveal reveal-delay-1"><em>Exigence. Finesse. Intention.</em></p>
+      <div class="gold-line reveal reveal-delay-2"></div>
+      <p class="reveal reveal-delay-2">Née d'une conviction simple : les objets que l'on offre méritent d'être pensés avec soin.</p>
+      <p class="reveal reveal-delay-2">Avec une approche d'ingénieur et une vision de créateur, chaque projet est conçu sur mesure — avec une attention obsessionnelle aux proportions, aux finitions, aux détails. Rien n'est laissé au hasard.</p>
+      <p class="reveal reveal-delay-2">Du fichier initial au rendu final, chaque étape est maîtrisée. Je privilégie la qualité à la quantité, toujours.</p>
+      <p class="reveal reveal-delay-2">Parce que chaque pièce doit durer, marquer, et refléter quelque chose d'unique pour la personne qui la reçoit.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- ── LE CATALOGUE ──────────────────────────────────────────────── -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<section id="catalogue">
+  <div class="catalogue-header reveal">
+    <span class="catalogue-eyebrow">Collection complète</span>
+    <h2 class="catalogue-title">Le <em>Catalogue</em></h2>
+    <p class="catalogue-sub">Cliquez sur une carte pour l'agrandir · Naviguez avec les flèches</p>
+  </div>
+
+  <!-- ── 1. LES OBJETS 3D ───────────────────────────────────────── -->
+  <div class="carousel-category">
+    <div class="carousel-cat-header">
+      <h3 class="carousel-cat-title">Les Objets 3D</h3>
+      <div class="carousel-cat-line"></div>
+      <span class="carousel-cat-count">16 créations</span>
+    </div>
+    <div class="carousel-outer" data-carousel="objets3d">
+      <button class="carousel-btn carousel-btn-prev" aria-label="Précédent">&#8592;</button>
+      <div class="carousel-viewport">
+        <div class="carousel-track">
+          <div class="c-card" data-name="Ace One Piece" data-price="sur commande">
+            <div class="c-card-img"><img src="images/objets-3d/Ace one piece.JPG" alt="Ace One Piece" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Ace One Piece</span><span class="c-card-price">sur commande</span></div>
+          </div>
+          <div class="c-card" data-name="Cadre Relief Porsche" data-price="30€">
+            <div class="c-card-img"><img src="images/objets-3d/cadrereliefporshe.JPG" alt="Cadre Relief Porsche" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Cadre Relief Porsche</span><span class="c-card-price">30€</span></div>
+          </div>
+          <div class="c-card" data-name="Chat" data-price="sur commande">
+            <div class="c-card-img"><img src="images/objets-3d/chat.JPG" alt="Chat" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Chat</span><span class="c-card-price">sur commande</span></div>
+          </div>
+          <div class="c-card" data-name="Chat Assis" data-price="sur commande">
+            <div class="c-card-img"><img src="images/objets-3d/chatassis.JPG" alt="Chat Assis" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Chat Assis</span><span class="c-card-price">sur commande</span></div>
+          </div>
+          <div class="c-card" data-name="Château de Poudlard" data-price="20€">
+            <div class="c-card-img"><img src="images/objets-3d/chateaudepoudelard.JPG" alt="Château de Poudlard" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Château de Poudlard</span><span class="c-card-price">20€</span></div>
+          </div>
+          <div class="c-card" data-name="Coq" data-price="25€">
+            <div class="c-card-img"><img src="images/objets-3d/coq.JPG" alt="Coq" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Coq</span><span class="c-card-price">25€</span></div>
+          </div>
+          <div class="c-card" data-name="Figurine" data-price="sur commande">
+            <div class="c-card-img"><img src="images/objets-3d/fugurine.JPG" alt="Figurine" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Figurine</span><span class="c-card-price">sur commande</span></div>
+          </div>
+          <div class="c-card" data-name="Kodama" data-price="sur commande">
+            <div class="c-card-img"><img src="images/objets-3d/kodama.JPG" alt="Kodama" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Kodama</span><span class="c-card-price">sur commande</span></div>
+          </div>
+          <div class="c-card" data-name="Le Penseur de Rodin" data-price="sur commande">
+            <div class="c-card-img"><img src="images/objets-3d/le penseur rodin.JPG" alt="Le Penseur de Rodin" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Le Penseur de Rodin</span><span class="c-card-price">sur commande</span></div>
+          </div>
+          <div class="c-card" data-name="Nain de Jardin" data-price="sur commande">
+            <div class="c-card-img"><img src="images/objets-3d/nain de jardin.JPG" alt="Nain de Jardin" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Nain de Jardin</span><span class="c-card-price">sur commande</span></div>
+          </div>
+          <div class="c-card" data-name="Porsche Rouge" data-price="sur commande">
+            <div class="c-card-img"><img src="images/objets-3d/porshe rouge.JPG" alt="Porsche Rouge" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Porsche Rouge</span><span class="c-card-price">sur commande</span></div>
+          </div>
+          <div class="c-card" data-name="Remy Ratatouille" data-price="sur commande">
+            <div class="c-card-img"><img src="images/objets-3d/remy ratatouille.JPG" alt="Remy Ratatouille" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Remy Ratatouille</span><span class="c-card-price">sur commande</span></div>
+          </div>
+          <div class="c-card" data-name="Statue de la Liberté" data-price="sur commande">
+            <div class="c-card-img"><img src="images/objets-3d/statue de la liberte.JPG" alt="Statue de la Liberté" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Statue de la Liberté</span><span class="c-card-price">sur commande</span></div>
+          </div>
+          <div class="c-card" data-name="Stitch" data-price="sur commande">
+            <div class="c-card-img"><img src="images/objets-3d/stitch.JPG" alt="Stitch" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Stitch</span><span class="c-card-price">sur commande</span></div>
+          </div>
+          <div class="c-card" data-name="Vase Moderne" data-price="15€">
+            <div class="c-card-img"><img src="images/objets-3d/vasemoderne.JPG" alt="Vase Moderne" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Vase Moderne</span><span class="c-card-price">15€</span></div>
+          </div>
+          <div class="c-card" data-name="Vénus" data-price="sur commande">
+            <div class="c-card-img"><img src="images/objets-3d/venus.JPG" alt="Vénus" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Vénus</span><span class="c-card-price">sur commande</span></div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-btn carousel-btn-next" aria-label="Suivant">&#8594;</button>
+      <div class="carousel-dots"></div>
+    </div>
+  </div>
+
+  <!-- ── 2. LES GRAVURES ────────────────────────────────────────── -->
+  <div class="carousel-category">
+    <div class="carousel-cat-header">
+      <h3 class="carousel-cat-title">Les Gravures</h3>
+      <div class="carousel-cat-line"></div>
+      <span class="carousel-cat-count">5 créations</span>
+    </div>
+    <div class="carousel-outer" data-carousel="gravures">
+      <button class="carousel-btn carousel-btn-prev" aria-label="Précédent">&#8592;</button>
+      <div class="carousel-viewport">
+        <div class="carousel-track">
+          <div class="c-card" data-name="Gravure Concorde" data-price="sur commande">
+            <div class="c-card-img"><img src="images/gravures/gravureconcorde.JPG" alt="Gravure Concorde" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Gravure Concorde</span><span class="c-card-price">sur commande</span></div>
+          </div>
+          <div class="c-card" data-name="Gravure Cyberpunk" data-price="30€">
+            <div class="c-card-img"><img src="images/gravures/gravurecyberpunk.JPG" alt="Gravure Cyberpunk" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Gravure Cyberpunk</span><span class="c-card-price">30€</span></div>
+          </div>
+          <div class="c-card" data-name="Gravure Formule 1" data-price="15€">
+            <div class="c-card-img"><img src="images/gravures/gravureformule1.JPG" alt="Gravure Formule 1" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Gravure Formule 1</span><span class="c-card-price">15€</span></div>
+          </div>
+          <div class="c-card" data-name="Gravure Lune" data-price="sur commande">
+            <div class="c-card-img"><img src="images/gravures/gravurelune.JPG" alt="Gravure Lune" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Gravure Lune</span><span class="c-card-price">sur commande</span></div>
+          </div>
+          <div class="c-card" data-name="Gravure sur Bois" data-price="20€">
+            <div class="c-card-img"><img src="images/gravures/gravuresurbois.JPG" alt="Gravure sur Bois" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Gravure sur Bois</span><span class="c-card-price">20€</span></div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-btn carousel-btn-next" aria-label="Suivant">&#8594;</button>
+      <div class="carousel-dots"></div>
+    </div>
+  </div>
+
+  <!-- ── 3. LE CRYSTAL ──────────────────────────────────────────── -->
+  <div class="carousel-category">
+    <div class="carousel-cat-header">
+      <h3 class="carousel-cat-title">Le Crystal</h3>
+      <div class="carousel-cat-line"></div>
+      <span class="carousel-cat-count">2 créations</span>
+    </div>
+    <div class="carousel-outer" data-carousel="crystal">
+      <button class="carousel-btn carousel-btn-prev" aria-label="Précédent">&#8592;</button>
+      <div class="carousel-viewport">
+        <div class="carousel-track">
+          <div class="c-card" data-name="Statue de la Liberté Crystal" data-price="40€">
+            <div class="c-card-img"><img src="images/crystal/statue de la liberte.JPG" alt="Statue de la Liberté Crystal" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Statue de la Liberté Crystal</span><span class="c-card-price">40€</span></div>
+          </div>
+          <div class="c-card" data-name="Trophée Personnalisable" data-price="sur commande">
+            <div class="c-card-img"><img src="images/crystal/trophee personnalisable.JPG" alt="Trophée Personnalisable" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Trophée Personnalisable</span><span class="c-card-price">sur commande</span></div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-btn carousel-btn-next" aria-label="Suivant">&#8594;</button>
+      <div class="carousel-dots"></div>
+    </div>
+  </div>
+
+  <!-- ── 4. LES PERSONNALISABLES ────────────────────────────────── -->
+  <div class="carousel-category">
+    <div class="carousel-cat-header">
+      <h3 class="carousel-cat-title">Les Personnalisables</h3>
+      <div class="carousel-cat-line"></div>
+      <span class="carousel-cat-count">6 créations</span>
+    </div>
+    <div class="carousel-outer" data-carousel="personnalises">
+      <button class="carousel-btn carousel-btn-prev" aria-label="Précédent">&#8592;</button>
+      <div class="carousel-viewport">
+        <div class="carousel-track">
+          <div class="c-card" data-name="Dé de Naissance 4cm" data-price="10€">
+            <div class="c-card-img"><img src="images/personnalises/dédenaissance4cm.JPG" alt="Dé de Naissance 4cm" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Dé de Naissance 4cm</span><span class="c-card-price">10€</span></div>
+          </div>
+          <div class="c-card" data-name="Gravure Couple 15/18cm" data-price="15€">
+            <div class="c-card-img"><img src="images/personnalises/gravurecouple1518cm.JPG" alt="Gravure Couple 15/18cm" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Gravure Couple 15/18cm</span><span class="c-card-price">15€</span></div>
+          </div>
+          <div class="c-card" data-name="Gravure dans une Gamelle" data-price="10€ + prix gamelle">
+            <div class="c-card-img"><img src="images/personnalises/gravuredansunegamelle.JPG" alt="Gravure dans une Gamelle" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Gravure dans une Gamelle</span><span class="c-card-price">10€ + prix gamelle</span></div>
+          </div>
+          <div class="c-card" data-name="Gravure sur Gourde" data-price="10€ + prix gourde">
+            <div class="c-card-img"><img src="images/personnalises/gravuresurgourde.JPG" alt="Gravure sur Gourde" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Gravure sur Gourde</span><span class="c-card-price">10€ + prix gourde</span></div>
+          </div>
+          <div class="c-card" data-name="Gravure sur Verres 500ml" data-price="15€ les deux">
+            <div class="c-card-img"><img src="images/personnalises/gravuresurverres500ml.JPG" alt="Gravure sur Verres 500ml" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Gravure sur Verres 500ml</span><span class="c-card-price">15€ les deux</span></div>
+          </div>
+          <div class="c-card" data-name="Gravure sur Opinel" data-price="7€ + prix opinel">
+            <div class="c-card-img"><img src="images/personnalises/gravurzsuropinel.JPG" alt="Gravure sur Opinel" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Gravure sur Opinel</span><span class="c-card-price">7€ + prix opinel</span></div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-btn carousel-btn-next" aria-label="Suivant">&#8594;</button>
+      <div class="carousel-dots"></div>
+    </div>
+  </div>
+
+  <!-- ── 5. COLLECTION BAR-LE-DUC ──────────────────────────────── -->
+  <div class="carousel-category">
+    <div class="carousel-cat-header">
+      <h3 class="carousel-cat-title">Collection Bar-le-Duc</h3>
+      <div class="carousel-cat-line"></div>
+      <span class="carousel-cat-count">2 créations</span>
+    </div>
+    <div class="carousel-outer" data-carousel="barleduc">
+      <button class="carousel-btn carousel-btn-prev" aria-label="Précédent">&#8592;</button>
+      <div class="carousel-viewport">
+        <div class="carousel-track">
+          <div class="c-card" data-name="Lingot Bar-le-Duc" data-price="10€">
+            <div class="c-card-img"><img src="images/collectionbarleduc/Lingot Bar-le-Duc.JPG" alt="Lingot Bar-le-Duc" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Lingot Bar-le-Duc</span><span class="c-card-price">10€</span></div>
+          </div>
+          <div class="c-card" data-name="Transi René de Chalon" data-price="10€">
+            <div class="c-card-img"><img src="images/collectionbarleduc/Transi René de Chalon.JPG" alt="Transi René de Chalon" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Transi René de Chalon</span><span class="c-card-price">10€</span></div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-btn carousel-btn-next" aria-label="Suivant">&#8594;</button>
+      <div class="carousel-dots"></div>
+    </div>
+  </div>
+
+  <!-- ── 6. COLLECTION NANCY ────────────────────────────────────── -->
+  <div class="carousel-category">
+    <div class="carousel-cat-header">
+      <h3 class="carousel-cat-title">Collection Nancy</h3>
+      <div class="carousel-cat-line"></div>
+      <span class="carousel-cat-count">3 créations</span>
+    </div>
+    <div class="carousel-outer" data-carousel="nancy">
+      <button class="carousel-btn carousel-btn-prev" aria-label="Précédent">&#8592;</button>
+      <div class="carousel-viewport">
+        <div class="carousel-track">
+          <div class="c-card" data-name="Cadre Nancy" data-price="20€">
+            <div class="c-card-img"><img src="images/collectionnancy/cadreNancy.JPG" alt="Cadre Nancy" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Cadre Nancy</span><span class="c-card-price">20€</span></div>
+          </div>
+          <div class="c-card" data-name="Stanislas 15cm" data-price="10€">
+            <div class="c-card-img"><img src="images/collectionnancy/stanislas 15 cm.JPG" alt="Stanislas 15cm" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Stanislas 15cm</span><span class="c-card-price">10€</span></div>
+          </div>
+          <div class="c-card" data-name="Stanislas en Bronze" data-price="50€">
+            <div class="c-card-img"><img src="images/collectionnancy/stanislas en bronze.JPG" alt="Stanislas en Bronze" loading="lazy"></div>
+            <div class="c-card-info"><span class="c-card-name">Stanislas en Bronze</span><span class="c-card-price">50€</span></div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-btn carousel-btn-next" aria-label="Suivant">&#8594;</button>
+      <div class="carousel-dots"></div>
+    </div>
+  </div>
+
+</section>
+
+<div class="divider"></div>
+
+<!-- ── TARIFS ─────────────────────────────────────────────────────── -->
+<section id="tarifs">
+  <div class="tarifs-inner">
+    <span class="section-eyebrow reveal">Transparence</span>
+    <h2 class="section-title reveal">Tarifs</h2>
+    <p class="section-sub reveal">Chaque pièce est fabriquée à la main. Les prix reflètent le travail, la matière et le soin.</p>
+    <div class="price-grid">
+      <div class="price-card reveal reveal-delay-1">
+        <p class="price-category">Gravures</p>
+        <p class="price-name">Gravure sur Verres 500ml</p>
+        <p class="price-amount">15€ <span>les deux</span></p>
+      </div>
+      <div class="price-card reveal reveal-delay-2">
+        <p class="price-category">Objets 3D</p>
+        <p class="price-name">Château de Poudlard</p>
+        <p class="price-amount">20€</p>
+      </div>
+      <div class="price-card reveal reveal-delay-3">
+        <p class="price-category">Objets 3D</p>
+        <p class="price-name">Cadre Relief Porsche</p>
+        <p class="price-amount">30€</p>
+      </div>
+      <div class="price-card reveal reveal-delay-1">
+        <p class="price-category">Objets 3D</p>
+        <p class="price-name">Cadre Relief Cirrus Jet</p>
+        <p class="price-amount">35€</p>
+      </div>
+      <div class="price-card reveal reveal-delay-2">
+        <p class="price-category">Le Crystal</p>
+        <p class="price-name">Gravure dans un Bloc de Verre</p>
+        <p class="price-amount">40€</p>
+      </div>
+      <div class="price-card reveal reveal-delay-3">
+        <p class="price-category">Les Personnalisables</p>
+        <p class="price-name">Liberté</p>
+        <p class="price-amount">35€</p>
+      </div>
+      <div class="price-card reveal reveal-delay-1">
+        <p class="price-category">Les Personnalisables</p>
+        <p class="price-name">Lingot d'Or dans un Cadre</p>
+        <p class="price-amount">30€</p>
+      </div>
+      <div class="price-card reveal reveal-delay-2">
+        <p class="price-category">Collection Nancy</p>
+        <p class="price-name">Stan 50cm</p>
+        <p class="price-amount">50€</p>
+      </div>
+      <div class="price-card reveal reveal-delay-3">
+        <p class="price-category">Collection Bar-le-Duc</p>
+        <p class="price-name">Lingot Bar-le-Duc</p>
+        <p class="price-amount">10€</p>
+        <p class="price-note">Transi René de Chalon aussi à 10€</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CONTACT ─────────────────────────────────────────────────────── -->
+<section id="contact">
+  <div class="contact-glow"></div>
+  <div class="contact-inner">
+    <span class="section-eyebrow reveal">Parlons de votre projet</span>
+    <h2 class="contact-title reveal">Créons<em>Ensemble</em></h2>
+    <p class="contact-sub reveal">Une idée, un anniversaire, un cadeau unique ?<br>Noam répond personnellement à chaque demande.</p>
+    <div class="contact-links reveal">
+      <a href="tel:0643983966" class="contact-link">
+        <span class="cl-label">Téléphone</span>
+        <span class="cl-value">06 43 98 39 66</span>
+      </a>
+      <a href="mailto:chez.badsou@gmail.com" class="contact-link">
+        <span class="cl-label">Email</span>
+        <span class="cl-value">chez.badsou@gmail.com</span>
+      </a>
+    </div>
+    <a href="mailto:chez.badsou@gmail.com" class="contact-cta reveal">Envoyer un message</a>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">Badsou</span>
+  <span class="footer-copy">© 2026 BADSOU · Bar-le-Duc · Meuse</span>
+  <span class="footer-tagline">Fabriqué ici, offert partout</span>
+</footer>
+
+<!-- ── LIGHTBOX ────────────────────────────────────────────────────── -->
+<div id="lightbox" role="dialog" aria-modal="true">
+  <button id="lightbox-close" aria-label="Fermer">✕ Fermer</button>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lb-meta">
+    <div class="lb-name" id="lb-name"></div>
+    <div class="lb-price" id="lb-price"></div>
+  </div>
+  <div class="lb-arrows">
+    <button class="lb-arrow" id="lb-prev">&#8592;</button>
+    <button class="lb-arrow" id="lb-next">&#8594;</button>
+  </div>
+</div>
+
+<!-- ── THREE.JS ────────────────────────────────────────────────────── -->
+
+<!-- ── VANILLA JS ──────────────────────────────────────────────────── -->
+<script>
+/* ── NAV ── */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', scrollY > 60), { passive: true });
+
+/* ── SCROLL REVEAL ── */
+new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 })
+  .observe.bind(new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 }));
+
+const revealObs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ─────────────────────────────────────────────────────────────────
+   CAROUSELS
+───────────────────────────────────────────────────────────────── */
+function initCarousel(outerEl) {
+  const track    = outerEl.querySelector('.carousel-track');
+  const viewport = outerEl.querySelector('.carousel-viewport');
+  const prevBtn  = outerEl.querySelector('.carousel-btn-prev');
+  const nextBtn  = outerEl.querySelector('.carousel-btn-next');
+  const dotsEl   = outerEl.querySelector('.carousel-dots');
+  const cards    = Array.from(track.querySelectorAll('.c-card'));
+  const n        = cards.length;
+  let current    = Math.floor(n / 2);
+
+  /* Arrows always visible — infinite loop, never blocked */
+  prevBtn.style.visibility = 'visible';
+  nextBtn.style.visibility = 'visible';
+
+  /* Build dots */
+  cards.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'carousel-dot';
+    dot.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(dot);
+  });
+
+  function cardMetrics() {
+    const cardW = cards[0].offsetWidth;
+    const gap = parseFloat(getComputedStyle(track).gap) || 28;
+    return { cardW, gap };
+  }
+
+  /* Offset so that card[idx] sits exactly at the center of the viewport */
+  function getOffset(idx) {
+    const { cardW, gap } = cardMetrics();
+    const vpW = viewport.offsetWidth;
+    return (vpW / 2) - (idx * (cardW + gap)) - (cardW / 2);
+  }
+
+  function goTo(idx, animated = true) {
+    /* Wrap around — infinite loop */
+    current = ((idx % n) + n) % n;
+
+    if (!animated) track.style.transition = 'none';
+    track.style.transform = `translateX(${getOffset(current)}px)`;
+    if (!animated) {
+      void track.offsetWidth; /* force reflow before restoring transition */
+      track.style.transition = '';
+    }
+
+    cards.forEach((c, i) => c.classList.toggle('active', i === current));
+    dotsEl.querySelectorAll('.carousel-dot')
+      .forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  /* Defer initial placement until layout is painted so offsetWidth is real */
+  requestAnimationFrame(() => requestAnimationFrame(() => goTo(Math.floor(n / 2), false)));
+
+  prevBtn.addEventListener('click', () => goTo((current - 1 + n) % n));
+  nextBtn.addEventListener('click', () => goTo((current + 1) % n));
+
+  /* Click inactive card → go to it; click active card → lightbox */
+  cards.forEach((card, i) => {
+    card.addEventListener('click', () => {
+      if (i !== current) goTo(i);
+      else openLightbox(cards, current);
+    });
+  });
+
+  /* Recalculate on resize */
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => goTo(current, false), 80);
+  });
+
+  /* Touch swipe */
+  let touchStartX = 0;
+  viewport.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  viewport.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) goTo(dx < 0 ? current + 1 : current - 1);
+  });
+}
+
+/* ── LIGHTBOX ── */
+const lightbox = document.getElementById('lightbox');
+const lbImg    = document.getElementById('lightbox-img');
+const lbName   = document.getElementById('lb-name');
+const lbPrice  = document.getElementById('lb-price');
+const lbClose  = document.getElementById('lightbox-close');
+const lbPrev   = document.getElementById('lb-prev');
+const lbNext   = document.getElementById('lb-next');
+
+let lbCards = null, lbIdx = 0;
+
+function openLightbox(cards, idx) {
+  lbCards = cards;
+  lbIdx   = idx;
+  showLb();
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function showLb() {
+  const card   = lbCards[lbIdx];
+  const img    = card.querySelector('img');
+  lbImg.src    = img.src;
+  lbImg.alt    = img.alt;
+  lbName.textContent  = card.dataset.name  || '';
+  lbPrice.textContent = card.dataset.price || '';
+  lbPrev.disabled = lbIdx === 0;
+  lbNext.disabled = lbIdx === lbCards.length - 1;
+}
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+lbClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+lbPrev.addEventListener('click', e => { e.stopPropagation(); if (lbIdx > 0) { lbIdx--; showLb(); } });
+lbNext.addEventListener('click', e => { e.stopPropagation(); if (lbIdx < lbCards.length - 1) { lbIdx++; showLb(); } });
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight' && lbIdx < lbCards.length - 1) { lbIdx++; showLb(); }
+  if (e.key === 'ArrowLeft'  && lbIdx > 0) { lbIdx--; showLb(); }
+});
+
+/* Init all carousels */
+document.querySelectorAll('.carousel-outer').forEach(initCarousel);
+</script>
+</body>
+</html>
