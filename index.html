@@ -163,53 +163,38 @@ img { max-width: 100%; }
 .hero-veil {
   position: absolute; inset: 0; z-index: 1;
   background:
-    radial-gradient(ellipse at center 60%, rgba(3,1,2,0.15) 0%, rgba(3,1,2,0.72) 100%),
-    linear-gradient(to bottom, rgba(3,1,2,0.55) 0%, rgba(3,1,2,0.25) 40%, rgba(8,7,5,0.92) 100%);
+    radial-gradient(ellipse at center 55%, transparent 0%, rgba(3,1,2,0.55) 100%),
+    linear-gradient(to bottom, rgba(3,1,2,0.4) 0%, rgba(3,1,2,0.05) 40%, rgba(8,7,5,0.9) 100%);
 }
 .hero-inner {
-  position: relative; z-index: 2;
-  display: flex; flex-direction: column; align-items: center; text-align: center;
-  padding: 0 24px;
+  position: relative; z-index: 2; width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  text-align: center; padding: 0 24px 12vh;
 }
-.hero-eyebrow {
-  font-family: var(--sans); font-weight: 300;
-  font-size: 0.62rem; letter-spacing: 0.55em; text-indent: 0.55em; text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0; animation: fadeUp 1s var(--ease-out) 0.55s forwards;
+.hero-logo {
+  height: clamp(76px, 11vw, 132px); width: auto; display: block;
+  filter: invert(72%) sepia(55%) saturate(500%) hue-rotate(5deg) brightness(97%)
+          drop-shadow(0 0 38px rgba(201,169,110,0.35));
+  opacity: 0; animation: fadeUp 1.1s var(--ease-out) 0.5s forwards;
 }
-.hero-title {
-  font-family: var(--sans); font-weight: 200;
-  font-size: clamp(3.4rem, 13vw, 10.5rem);
-  letter-spacing: 0.28em; text-indent: 0.28em;
-  color: #fff; text-transform: uppercase;
-  line-height: 1.05; margin: 18px 0 10px;
-  display: flex;
-  text-shadow: 0 0 90px rgba(201,169,110,0.25);
-}
-.hero-title span {
-  display: inline-block;
-  opacity: 0; transform: translateY(0.45em) rotate(2deg);
-  animation: heroLetter 0.9s var(--ease-out) forwards;
-  animation-delay: calc(0.65s + var(--i) * 0.07s);
-}
-@keyframes heroLetter { to { opacity: 1; transform: translateY(0) rotate(0); } }
 .hero-tagline {
   font-family: var(--serif); font-style: italic; font-weight: 400;
   font-size: clamp(1.05rem, 2.2vw, 1.5rem); letter-spacing: 0.06em;
-  color: var(--gold-light);
-  opacity: 0; animation: fadeUp 1s var(--ease-out) 1.25s forwards;
+  color: var(--gold-light); margin-top: 24px;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.7);
+  opacity: 0; animation: fadeUp 1s var(--ease-out) 0.95s forwards;
 }
 .hero-btn {
-  display: inline-block; margin-top: 44px;
-  border: 1px solid rgba(201,169,110,0.5);
-  color: var(--gold); background: transparent;
+  display: inline-block; margin-top: 38px;
+  border: 1px solid rgba(201,169,110,0.55);
+  color: var(--gold); background: rgba(8,7,5,0.35);
   padding: 15px 48px;
   font-family: var(--sans); font-weight: 300;
   font-size: 0.66rem; letter-spacing: 0.4em; text-indent: 0.4em; text-transform: uppercase;
   text-decoration: none; cursor: pointer;
   position: relative; overflow: hidden;
   transition: color 0.45s var(--ease), border-color 0.45s;
-  opacity: 0; animation: fadeUp 1s var(--ease-out) 1.5s forwards;
+  opacity: 0; animation: fadeUp 1s var(--ease-out) 1.25s forwards;
 }
 .hero-btn::before {
   content: ''; position: absolute; inset: 0; background: var(--gold);
@@ -219,24 +204,6 @@ img { max-width: 100%; }
 }
 .hero-btn:hover { color: var(--dark); border-color: var(--gold); }
 .hero-btn:hover::before { transform: scaleY(1); }
-.hero-scroll {
-  position: absolute; bottom: 34px; left: 50%; transform: translateX(-50%); z-index: 2;
-  display: flex; flex-direction: column; align-items: center; gap: 12px;
-  font-family: var(--sans); font-weight: 300;
-  font-size: 0.56rem; letter-spacing: 0.4em; text-indent: 0.4em; text-transform: uppercase;
-  color: var(--muted);
-  opacity: 0; animation: fadeUp 1s var(--ease-out) 1.9s forwards;
-}
-.hero-scroll span {
-  width: 1px; height: 52px; background: rgba(201,169,110,0.2);
-  position: relative; overflow: hidden;
-}
-.hero-scroll span::after {
-  content: ''; position: absolute; left: 0; top: -50%;
-  width: 100%; height: 50%; background: var(--gold);
-  animation: scrollDrop 2s var(--ease) infinite;
-}
-@keyframes scrollDrop { 0% { top: -50%; } 60%, 100% { top: 110%; } }
 
 /* ── SECTION PRIMITIVES ────────────────────────────────────────── */
 .section-eyebrow {
@@ -356,32 +323,40 @@ img { max-width: 100%; }
 }
 .at-header h2 em { color: var(--gold); font-style: italic; }
 .at-hud {
-  position: absolute; left: 60px; bottom: 76px; z-index: 3;
-  max-width: 380px; pointer-events: none;
+  position: absolute; left: 60px; bottom: 64px; z-index: 3;
+  width: 372px; max-width: calc(100vw - 48px);
+  display: grid;
+  background: rgba(10,8,6,0.74);
+  border: 1px solid rgba(201,169,110,0.22);
+  border-top: 2px solid var(--gold);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 24px 28px 26px;
+  pointer-events: none;
 }
 .at-phase {
-  position: absolute; bottom: 0; left: 0; width: 100%;
-  opacity: 0; transform: translateY(22px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  grid-area: 1 / 1;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
 }
 .at-phase.on { opacity: 1; transform: translateY(0); }
 .at-num {
   font-family: var(--sans); font-weight: 200;
-  font-size: 2.6rem; color: rgba(201,169,110,0.35); line-height: 1;
+  font-size: 1.7rem; color: rgba(201,169,110,0.45); line-height: 1;
   display: block; margin-bottom: 10px;
 }
 .at-phase h3 {
   font-family: var(--serif); font-weight: 500;
-  font-size: 1.5rem; color: #fff; letter-spacing: 0.03em; margin-bottom: 8px;
+  font-size: 1.42rem; color: #fff; letter-spacing: 0.03em; margin-bottom: 8px; line-height: 1.25;
 }
 .at-phase h3 em { color: var(--gold); font-style: italic; }
-.at-phase p { color: var(--muted); font-size: 0.98rem; line-height: 1.55; }
+.at-phase p { color: #a89884; font-size: 0.95rem; line-height: 1.55; }
 .at-counter {
   display: inline-block; margin-top: 14px;
   font-family: var(--sans); font-weight: 300;
-  font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
+  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
   color: var(--gold);
-  border: 1px solid rgba(201,169,110,0.3); padding: 8px 16px;
+  border: 1px solid rgba(201,169,110,0.3); padding: 7px 14px;
 }
 .at-counter b { font-weight: 500; }
 .at-hint {
@@ -699,18 +674,18 @@ footer {
   .carousel-track { gap: 18px; }
   #atelier { height: 380vh; }
   .at-header { top: 78px; }
-  .at-hud { left: 26px; right: 26px; bottom: 60px; max-width: none; }
+  .at-hud { left: 20px; right: 20px; bottom: 22px; width: auto; max-width: none; padding: 18px 20px 20px; }
   .at-hint { display: none; }
-  .at-rail { right: 18px; height: 140px; }
-  .at-num { font-size: 2rem; }
-  .at-phase h3 { font-size: 1.25rem; }
-  .at-phase p { font-size: 0.88rem; }
+  .at-rail { right: 10px; height: 140px; }
+  .at-num { font-size: 1.4rem; margin-bottom: 6px; }
+  .at-phase h3 { font-size: 1.15rem; }
+  .at-phase p { font-size: 0.85rem; }
+  .at-counter { margin-top: 10px; }
 }
 @media (max-width: 540px) {
   .c-card { flex: 0 0 190px; }
   .carousel-track { gap: 14px; }
   .catalogue-title { font-size: clamp(2.6rem, 11vw, 4.6rem); }
-  .hero-title { letter-spacing: 0.2em; text-indent: 0.2em; }
   .contact-links { flex-direction: column; gap: 30px; }
 }
 
@@ -718,7 +693,7 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .reveal, .hero-eyebrow, .hero-tagline, .hero-btn, .hero-scroll, .hero-title span { opacity: 1 !important; transform: none !important; }
+  .reveal, .hero-logo, .hero-tagline, .hero-btn { opacity: 1 !important; transform: none !important; }
   .clip-reveal > i { transform: none !important; }
   .marquee-track { animation: none; }
 }
@@ -741,8 +716,8 @@ footer {
   </a>
   <ul class="nav-links">
     <li><a href="#about">L'Artisan</a></li>
-    <li><a href="#atelier">L'Atelier 3D</a></li>
     <li><a href="#catalogue">Catalogue</a></li>
+    <li><a href="#atelier">L'Atelier 3D</a></li>
     <li><a href="#tarifs">Tarifs</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -751,8 +726,8 @@ footer {
 
 <div id="mobile-menu">
   <a href="#about">L'<em>Artisan</em></a>
-  <a href="#atelier">L'<em>Atelier</em> 3D</a>
   <a href="#catalogue">Le <em>Catalogue</em></a>
+  <a href="#atelier">L'<em>Atelier</em> 3D</a>
   <a href="#tarifs">Les <em>Tarifs</em></a>
   <a href="#contact"><em>Contact</em></a>
 </div>
@@ -762,14 +737,10 @@ footer {
   <div class="hero-bg" id="hero-bg"></div>
   <div class="hero-veil"></div>
   <div class="hero-inner">
-    <p class="hero-eyebrow">Gravure laser &amp; Impression 3D · Bar-le-Duc</p>
-    <h1 class="hero-title" aria-label="BADSOU">
-      <span style="--i:0">B</span><span style="--i:1">A</span><span style="--i:2">D</span><span style="--i:3">S</span><span style="--i:4">O</span><span style="--i:5">U</span>
-    </h1>
+    <img class="hero-logo" src="images/logo.png" alt="BADSOU" onerror="this.src='images/logo.jpg'">
     <p class="hero-tagline">Fabriqué ici, offert partout.</p>
     <a class="hero-btn magnetic" href="#catalogue">Découvrir</a>
   </div>
-  <div class="hero-scroll"><span></span>Défiler</div>
 </section>
 
 <div class="divider"></div>
@@ -802,49 +773,6 @@ footer {
 </section>
 
 <div class="divider"></div>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     ATELIER 3D — Découvrir l'impression 3D (scroll-driven Three.js)
-═══════════════════════════════════════════════════════════════ -->
-<section id="atelier">
-  <div class="at-sticky">
-    <canvas id="print-canvas" aria-label="Démonstration 3D interactive : une pièce s'imprime couche après couche puis est gravée au laser"></canvas>
-
-    <div class="at-header">
-      <span class="section-eyebrow">Le savoir-faire</span>
-      <h2>Découvrir <em>l'impression 3D</em></h2>
-      <div class="at-fallback">
-        <p>Chaque pièce naît couche après couche : la matière fondue est déposée en spirale continue, un dixième de millimètre à la fois, puis le laser vient graver et signer l'objet. C'est cette précision qui rend chaque création unique.</p>
-      </div>
-    </div>
-
-    <div class="at-hud">
-      <div class="at-phase" data-phase="1">
-        <span class="at-num">01</span>
-        <h3>L'impression, <em>couche après couche</em></h3>
-        <p>La matière fond et se dépose en spirale continue. Chaque passage ajoute un dixième de millimètre — la pièce s'élève, lentement, précisément.</p>
-        <span class="at-counter">Couche <b id="layer-count">0</b> / <b id="layer-total">46</b></span>
-      </div>
-      <div class="at-phase" data-phase="2">
-        <span class="at-num">02</span>
-        <h3>La <em>révélation</em></h3>
-        <p>La buse se retire. La pièce refroidit et les couches se soudent en un seul volume — l'objet prend vie.</p>
-      </div>
-      <div class="at-phase" data-phase="3">
-        <span class="at-num">03</span>
-        <h3>La <em>gravure laser</em></h3>
-        <p>Le laser signe la pièce au dixième de millimètre. C'est ici que l'objet devient unique — le vôtre.</p>
-      </div>
-    </div>
-
-    <div class="at-hint">
-      <b>Glissez</b> pour faire pivoter<br>
-      <b>Défilez</b> pour piloter l'atelier
-    </div>
-
-    <div class="at-rail" aria-hidden="true"><div class="at-rail-fill" id="at-rail-fill"></div></div>
-  </div>
-</section>
 
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track" id="marquee-track">
@@ -1112,6 +1040,51 @@ footer {
 
 <div class="divider"></div>
 
+<!-- ═══════════════════════════════════════════════════════════════
+     ATELIER 3D — Découvrir l'impression 3D (scroll-driven Three.js)
+═══════════════════════════════════════════════════════════════ -->
+<section id="atelier">
+  <div class="at-sticky">
+    <canvas id="print-canvas" aria-label="Démonstration 3D interactive : une pièce s'imprime couche après couche puis est gravée au laser"></canvas>
+
+    <div class="at-header">
+      <span class="section-eyebrow">Le savoir-faire</span>
+      <h2>Découvrir <em>l'impression 3D</em></h2>
+      <div class="at-fallback">
+        <p>Chaque pièce naît couche après couche : la matière fondue est déposée en spirale continue, un dixième de millimètre à la fois, puis le laser vient graver et signer l'objet. C'est cette précision qui rend chaque création unique.</p>
+      </div>
+    </div>
+
+    <div class="at-hud">
+      <div class="at-phase" data-phase="1">
+        <span class="at-num">01</span>
+        <h3>L'impression, <em>couche après couche</em></h3>
+        <p>La matière fond et se dépose en spirale continue. Chaque passage ajoute un dixième de millimètre — la pièce s'élève, lentement, précisément.</p>
+        <span class="at-counter">Couche <b id="layer-count">0</b> / <b id="layer-total">46</b></span>
+      </div>
+      <div class="at-phase" data-phase="2">
+        <span class="at-num">02</span>
+        <h3>La <em>révélation</em></h3>
+        <p>La buse se retire. La pièce refroidit et les couches se soudent en un seul volume — l'objet prend vie.</p>
+      </div>
+      <div class="at-phase" data-phase="3">
+        <span class="at-num">03</span>
+        <h3>La <em>gravure laser</em></h3>
+        <p>Le laser signe la pièce au dixième de millimètre. C'est ici que l'objet devient unique — le vôtre.</p>
+      </div>
+    </div>
+
+    <div class="at-hint">
+      <b>Glissez</b> pour faire pivoter<br>
+      <b>Défilez</b> pour piloter l'atelier
+    </div>
+
+    <div class="at-rail" aria-hidden="true"><div class="at-rail-fill" id="at-rail-fill"></div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <!-- ── TARIFS ────────────────────────────────────────────────────── -->
 <section id="tarifs">
   <div class="tarifs-inner">
@@ -1372,17 +1345,21 @@ function initCarousel(outer) {
   const N = realCards.length;
   if (N === 0) return;
 
-  /* Clones : [set A][set réel][set B] → boucle sans couture */
-  const before = document.createDocumentFragment();
-  const after = document.createDocumentFragment();
-  realCards.forEach(c => before.appendChild(c.cloneNode(true)));
-  realCards.forEach(c => after.appendChild(c.cloneNode(true)));
-  track.insertBefore(before, track.firstChild);
-  track.appendChild(after);
+  /* Boucle infinie (clones) seulement si assez de cartes pour remplir
+     l'écran — sinon mode fini : aucune répétition visible. */
+  const INFINITE = N >= 6;
+  if (INFINITE) {
+    const before = document.createDocumentFragment();
+    const after = document.createDocumentFragment();
+    realCards.forEach(c => before.appendChild(c.cloneNode(true)));
+    realCards.forEach(c => after.appendChild(c.cloneNode(true)));
+    track.insertBefore(before, track.firstChild);
+    track.appendChild(after);
+  }
 
-  const cards = Array.from(track.children); /* 3N */
-  let v = N + Math.floor(N / 2);            /* index virtuel — carte du milieu */
-  let animating = false;
+  const cards = Array.from(track.children);        /* 3N ou N */
+  const BASE = INFINITE ? N : 0;
+  let v = BASE + Math.floor(N / 2);                /* carte du milieu */
 
   /* Points (un par carte réelle) */
   const dots = [];
@@ -1391,8 +1368,9 @@ function initCarousel(outer) {
     dot.className = 'carousel-dot';
     dot.setAttribute('aria-label', 'Aller à la création ' + (i + 1));
     dot.addEventListener('click', () => {
+      if (!INFINITE) { goTo(i); return; }
       const base = Math.floor(v / N) * N + i;
-      const cand = [base - N, base, base + N].filter(c => c >= 0 && c < 3 * N);
+      const cand = [base - N, base, base + N].filter(c => c >= 0 && c < cards.length);
       cand.sort((a, b) => Math.abs(a - v) - Math.abs(b - v));
       goTo(cand[0]);
     });
@@ -1418,20 +1396,18 @@ function initCarousel(outer) {
     if (!animated) track.classList.add('no-anim');
     track.style.transform = 'translateX(' + offsetFor(v) + 'px)';
     if (!animated) {
-      void track.offsetWidth; /* reflow avant de réactiver la transition */
+      void track.offsetWidth;
       track.classList.remove('no-anim');
     }
     paint();
   }
   function normalize() {
+    if (!INFINITE) return;
     if (v < N) { v += N; place(false); }
     else if (v >= 2 * N) { v -= N; place(false); }
-    animating = false;
   }
   function goTo(idx) {
-    if (animating && REDUCED === false) { /* on laisse s'enchaîner, mais on borne */ }
-    v = clamp(idx, 0, 3 * N - 1);
-    animating = true;
+    v = INFINITE ? clamp(idx, 0, cards.length - 1) : ((idx % N) + N) % N;
     place(true);
     if (REDUCED) normalize();
   }
@@ -1466,7 +1442,7 @@ function initCarousel(outer) {
     rT = setTimeout(() => place(false), 90);
   });
 
-  /* Placement initial (double rAF : layout peint) */
+  /* Placement initial */
   requestAnimationFrame(() => requestAnimationFrame(() => place(false)));
 }
 document.querySelectorAll('.carousel-outer').forEach(initCarousel);
@@ -1591,15 +1567,77 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
   nozzle.add(carriage, heatBlock, cone, tipGlow, nozzleLight);
   root.add(nozzle);
 
-  /* ── Halo portique + bras radial ── */
-  const halo = new THREE.Mesh(
-    new THREE.TorusGeometry(2.6, 0.014, 8, 110),
-    new THREE.MeshBasicMaterial({ color: 0xc9a96e, transparent: true, opacity: 0.65 })
-  );
-  halo.rotation.x = Math.PI / 2;
-  root.add(halo);
-  const arm = new THREE.Mesh(new THREE.BoxGeometry(1, 0.045, 0.045), goldMetal);
-  root.add(arm);
+  /* ── Châssis de l'imprimante (style machine réelle) ── */
+  const RAIL_Z = -1.78;
+  const frameMat = new THREE.MeshStandardMaterial({ color: 0x191410, metalness: 0.85, roughness: 0.42 });
+  const goldTrim = new THREE.MeshStandardMaterial({ color: 0xc9a96e, metalness: 0.8, roughness: 0.3 });
+
+  const machine = new THREE.Group();
+  root.add(machine);
+
+  /* Socle */
+  const baseSlab = new THREE.Mesh(new THREE.BoxGeometry(6.6, 0.32, 4.8), frameMat);
+  baseSlab.position.set(0, -0.38, -0.3);
+  machine.add(baseSlab);
+  const baseTrim = new THREE.Mesh(new THREE.BoxGeometry(6.6, 0.04, 0.06), goldTrim);
+  baseTrim.position.set(0, -0.2, 2.06);
+  machine.add(baseTrim);
+
+  /* Tours verticales + traverse haute */
+  const TOWER_H = 5.4;
+  [-2.85, 2.85].forEach(x => {
+    const tower = new THREE.Mesh(new THREE.BoxGeometry(0.3, TOWER_H, 0.3), frameMat);
+    tower.position.set(x, TOWER_H / 2 - 0.22, RAIL_Z);
+    machine.add(tower);
+    const cap = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.1, 0.34), goldTrim);
+    cap.position.set(x, TOWER_H - 0.18, RAIL_Z);
+    machine.add(cap);
+  });
+  const crossBeam = new THREE.Mesh(new THREE.BoxGeometry(6.0, 0.3, 0.3), frameMat);
+  crossBeam.position.set(0, TOWER_H - 0.34, RAIL_Z);
+  machine.add(crossBeam);
+
+  /* Bobine de filament au sommet */
+  const spool = new THREE.Group();
+  const spoolRing = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.13, 12, 40), goldTrim.clone());
+  const spoolHub = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.34, 16), frameMat);
+  spoolHub.rotation.x = Math.PI / 2;
+  spool.add(spoolRing, spoolHub);
+  spool.position.set(0, TOWER_H + 0.28, RAIL_Z);
+  machine.add(spool);
+
+  /* Portique X mobile (monte avec les couches) + chariot + bras Z */
+  const rail = new THREE.Mesh(new THREE.BoxGeometry(5.7, 0.16, 0.16), frameMat);
+  const railTrim = new THREE.Mesh(new THREE.BoxGeometry(5.7, 0.04, 0.18), goldTrim);
+  railTrim.position.y = 0.1;
+  rail.add(railTrim);
+  root.add(rail);
+  const railCarriage = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.3, 0.3), frameMat);
+  root.add(railCarriage);
+  const armZ = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.08, 1), goldMetal);
+  root.add(armZ);
+
+  /* Filament : courbe de la bobine à la tête */
+  const FIL_PTS = 22;
+  const filPos = new Float32Array(FIL_PTS * 3);
+  const filGeo = new THREE.BufferGeometry();
+  filGeo.setAttribute('position', new THREE.BufferAttribute(filPos, 3));
+  const filMat = new THREE.LineBasicMaterial({ color: 0xe9ddc9, transparent: true, opacity: 0.85 });
+  const filament = new THREE.Line(filGeo, filMat);
+  root.add(filament);
+  const filA = new THREE.Vector3(), filB = new THREE.Vector3(), filC = new THREE.Vector3();
+  function updateFilament(headX, headY, headZ) {
+    filA.set(0, TOWER_H - 0.12, RAIL_Z);            /* sortie de bobine */
+    filB.set(headX, headY + 0.5, headZ);            /* entrée de tête */
+    filC.set((filA.x + filB.x) / 2, Math.min(filA.y, filB.y + 1.2) - 0.45, (filA.z + filB.z) / 2);
+    for (let k = 0; k < FIL_PTS; k++) {
+      const t = k / (FIL_PTS - 1), u = 1 - t;
+      filPos[k * 3]     = u * u * filA.x + 2 * u * t * filC.x + t * t * filB.x;
+      filPos[k * 3 + 1] = u * u * filA.y + 2 * u * t * filC.y + t * t * filB.y;
+      filPos[k * 3 + 2] = u * u * filA.z + 2 * u * t * filC.z + t * t * filB.z;
+    }
+    filGeo.attributes.position.needsUpdate = true;
+  }
 
   /* ── Laser ── */
   const laserGroup = new THREE.Group();
@@ -1722,10 +1760,10 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
 
   /* ── Caméra : trajectoire par images clés selon p ── */
   const camKeys = [
-    { p: 0,        pos: [0, 3.5, 9.6], look: [0, 1.1, 0] },
-    { p: PRINT_END,pos: [0, 4.1, 8.4], look: [0, 1.9, 0] },
-    { p: COOL_END, pos: [0, 3.4, 8.0], look: [0, HEIGHT * 0.5, 0] },
-    { p: 1,        pos: [0, 2.7, 7.0], look: [0, ENGRAVE_Y, 0] }
+    { p: 0,        pos: [0.4, 3.6, 10.8], look: [0, 1.6, 0] },
+    { p: PRINT_END,pos: [0.2, 4.2, 9.6],  look: [0, 2.2, 0] },
+    { p: COOL_END, pos: [0, 3.5, 9.0],    look: [0, HEIGHT * 0.55, 0] },
+    { p: 1,        pos: [0, 2.9, 7.6],    look: [0, ENGRAVE_Y, 0] }
   ];
   const camPos = new THREE.Vector3(), camLook = new THREE.Vector3();
   function updateCamera(p, mx, my) {
@@ -1813,28 +1851,26 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
     const nozzleT = clamp(layerFloat / LAYERS, 0, 1);
     const nR = radiusAt(nozzleT);
     let nY = layerFloat * LAYER_H + 0.145;
-    if (!printing) nY += smooth(coolP) * 2.4 + laserP * 0.0; /* retrait vertical */
+    if (!printing) nY = Math.min(nY + smooth(coolP) * 2.4, 4.55); /* la tête se gare en haut */
     const nA = nozzleAngle;
     nozzle.position.set(Math.cos(nA) * nR, nY, Math.sin(nA) * nR);
     const nozzleFade = printing ? 1 : clamp(1 - coolP * 1.4, 0, 1);
     tipGlow.material.opacity = nozzleFade * (0.75 + 0.25 * Math.sin(time * 14));
     nozzleLight.intensity = printing ? (1.1 + 0.3 * Math.sin(time * 11)) : nozzleFade;
-    nozzle.visible = nozzleFade > 0.01 || printing;
 
-    /* Halo + bras suivent la buse */
-    const haloY = nY + 0.36;
-    halo.position.y = haloY;
-    halo.material.opacity = nozzle.visible ? 0.55 * nozzleFade + (printing ? 0.1 : 0) : 0;
-    halo.visible = nozzle.visible;
-    arm.visible = nozzle.visible;
-    if (arm.visible) {
-      const armLen = Math.max(2.6 - nR, 0.05);
-      const midR = (2.6 + nR) / 2;
-      arm.scale.x = armLen;
-      arm.position.set(Math.cos(nA) * midR, haloY, Math.sin(nA) * midR);
-      arm.rotation.y = -nA;
-      arm.material.opacity = 1;
-    }
+    /* Portique et chariot suivent la buse ; le bras Z relie le rail à la tête */
+    const gantryY = nY + 0.36;
+    rail.position.set(0, gantryY, RAIL_Z);
+    railCarriage.position.set(nozzle.position.x, gantryY, RAIL_Z);
+    const span = Math.max(nozzle.position.z - RAIL_Z, 0.05);
+    armZ.scale.z = span;
+    armZ.position.set(nozzle.position.x, gantryY, RAIL_Z + span / 2);
+
+    /* Filament + bobine : actifs pendant l'impression */
+    updateFilament(nozzle.position.x, gantryY, nozzle.position.z);
+    filMat.opacity = printing ? 0.85 : nozzleFade * 0.85;
+    filament.visible = filMat.opacity > 0.02;
+    if (printing) spool.rotation.z -= dt * 1.4;
 
     /* ── Refroidissement : pulsation dorée globale ── */
     if (coolP > 0 && laserP === 0) {
