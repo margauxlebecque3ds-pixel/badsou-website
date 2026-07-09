@@ -169,20 +169,73 @@ img { max-width: 100%; }
 .hero-inner {
   position: relative; z-index: 2; width: 100%; height: 100%;
   display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-  text-align: center; padding: 0 24px 12vh;
+  text-align: center; padding: 0 24px 23vh;
 }
-.hero-logo {
-  height: clamp(76px, 11vw, 132px); width: auto; display: block;
-  filter: invert(72%) sepia(55%) saturate(500%) hue-rotate(5deg) brightness(97%)
-          drop-shadow(0 0 38px rgba(201,169,110,0.35));
-  opacity: 0; animation: fadeUp 1.1s var(--ease-out) 0.5s forwards;
+
+/* ── Étoiles scintillantes ── */
+.hero-stars { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+.hero-stars i {
+  position: absolute; width: 2px; height: 2px; border-radius: 50%;
+  background: #f7ecd6; opacity: 0;
+  animation: twinkle linear infinite;
+}
+.hero-stars i.star-big {
+  width: 3px; height: 3px;
+  box-shadow: 0 0 9px 1.5px rgba(247,236,214,0.75);
+}
+@keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 0.9; } }
+
+/* ── Titre animé lettre par lettre, façon générique de film ── */
+.hero-word {
+  position: relative;
+  font-family: var(--serif); font-weight: 600;
+  font-size: clamp(3.2rem, 9.5vw, 7.2rem);
+  letter-spacing: 0.14em; text-indent: 0.14em;
+  line-height: 1; margin: 0;
+  display: flex; align-items: baseline;
+}
+.hero-word::before {
+  content: ''; position: absolute; inset: -55% -18%;
+  background: radial-gradient(ellipse at center, rgba(255,248,230,0.16) 0%, rgba(201,169,110,0.08) 40%, transparent 70%);
+  z-index: -1; pointer-events: none;
+  opacity: 0; animation: glowIn 1.6s var(--ease) 1.5s forwards;
+}
+@keyframes glowIn { to { opacity: 1; } }
+.hw-letter {
+  display: inline-block; position: relative;
+  background: linear-gradient(180deg, #f6e8c6 0%, #dfbe7e 36%, #b78f52 68%, #8a6d3b 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  filter: drop-shadow(0 0 12px rgba(255,247,226,0.4)) drop-shadow(0 0 44px rgba(201,169,110,0.38));
+  opacity: 0;
+  animation: letterIn 0.85s var(--ease-out) forwards;
+  animation-delay: calc(0.5s + var(--i) * 0.14s);
+}
+@keyframes letterIn {
+  0%   { opacity: 0; transform: translateY(0.4em) scale(1.14); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.hw-hat {
+  position: absolute; top: -0.3em; left: 50%; width: 0.66em; height: auto;
+  color: var(--gold-light);
+  filter: drop-shadow(0 0 10px rgba(255,247,226,0.45));
+  opacity: 0;
+  transform: translate(-50%, -1.2em) rotate(20deg);
+  animation: hatDrop 0.9s cubic-bezier(0.34, 1.4, 0.64, 1) 1.7s forwards;
+}
+.hw-hat path, .hw-hat rect { fill: currentColor; }
+@keyframes hatDrop {
+  0%   { opacity: 0; transform: translate(-50%, -1.2em) rotate(20deg); }
+  55%  { opacity: 1; transform: translate(-50%, 0.07em) rotate(-11deg); }
+  75%  { transform: translate(-50%, -0.06em) rotate(-4deg); }
+  100% { opacity: 1; transform: translate(-50%, 0) rotate(-8deg); }
 }
 .hero-tagline {
   font-family: var(--serif); font-style: italic; font-weight: 400;
   font-size: clamp(1.05rem, 2.2vw, 1.5rem); letter-spacing: 0.06em;
-  color: var(--gold-light); margin-top: 24px;
+  color: var(--gold-light); margin-top: 30px;
   text-shadow: 0 2px 18px rgba(0,0,0,0.7);
-  opacity: 0; animation: fadeUp 1s var(--ease-out) 0.95s forwards;
+  opacity: 0; animation: fadeUp 1s var(--ease-out) 2.2s forwards;
 }
 .hero-btn {
   display: inline-block; margin-top: 38px;
@@ -194,7 +247,7 @@ img { max-width: 100%; }
   text-decoration: none; cursor: pointer;
   position: relative; overflow: hidden;
   transition: color 0.45s var(--ease), border-color 0.45s;
-  opacity: 0; animation: fadeUp 1s var(--ease-out) 1.25s forwards;
+  opacity: 0; animation: fadeUp 1s var(--ease-out) 2.5s forwards;
 }
 .hero-btn::before {
   content: ''; position: absolute; inset: 0; background: var(--gold);
@@ -703,7 +756,9 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .reveal, .hero-logo, .hero-tagline, .hero-btn { opacity: 1 !important; transform: none !important; }
+  .reveal, .hero-tagline, .hero-btn, .hw-letter { opacity: 1 !important; transform: none !important; }
+  .hw-hat { opacity: 1 !important; transform: translate(-50%, 0) rotate(-8deg) !important; }
+  .hero-stars { display: none; }
   .clip-reveal > i { transform: none !important; }
   .marquee-track { animation: none; }
 }
@@ -746,8 +801,11 @@ footer {
 <section id="hero">
   <div class="hero-bg" id="hero-bg"></div>
   <div class="hero-veil"></div>
+  <div class="hero-stars" id="hero-stars" aria-hidden="true"></div>
   <div class="hero-inner">
-    <img class="hero-logo" src="images/logo.png" alt="BADSOU" onerror="this.src='images/logo.jpg'">
+    <h1 class="hero-word" aria-label="BADSOU">
+      <span class="hw-letter" style="--i:0" aria-hidden="true">B</span><span class="hw-letter" style="--i:1" aria-hidden="true">A</span><span class="hw-letter" style="--i:2" aria-hidden="true">D</span><span class="hw-letter" style="--i:3" aria-hidden="true">S</span><span class="hw-letter" style="--i:4" aria-hidden="true">O<svg class="hw-hat" viewBox="0 0 64 40" aria-hidden="true"><path d="M20 3 h24 a2.5 2.5 0 0 1 2.5 2.5 V26 h-29 V5.5 A2.5 2.5 0 0 1 20 3 Z"/><rect x="5" y="26" width="54" height="7.5" rx="3.75"/><rect x="17.5" y="19.5" width="29" height="5" fill="rgba(8,7,5,0.4)"/></svg></span><span class="hw-letter" style="--i:5" aria-hidden="true">U</span>
+    </h1>
     <p class="hero-tagline">Fabriqué ici, offert partout.</p>
     <a class="hero-btn magnetic" href="#catalogue">Découvrir</a>
   </div>
@@ -1308,6 +1366,24 @@ if (!TOUCH && !REDUCED) {
     btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
   });
 }
+
+/* ═══════════════════ ÉTOILES DU HERO ═════════════════════════════ */
+(function () {
+  const wrap = document.getElementById('hero-stars');
+  if (!wrap || REDUCED) return;
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < 72; i++) {
+    const s = document.createElement('i');
+    if (Math.random() < 0.15) s.className = 'star-big';
+    s.style.left = (Math.random() * 100).toFixed(2) + '%';
+    s.style.top = (Math.random() * 100).toFixed(2) + '%';
+    const d = 2.2 + Math.random() * 4.2;
+    s.style.animationDuration = d.toFixed(2) + 's';
+    s.style.animationDelay = (Math.random() * d).toFixed(2) + 's';
+    frag.appendChild(s);
+  }
+  wrap.appendChild(frag);
+})();
 
 /* ═══════════════════ MARQUEE (duplication) ═══════════════════════ */
 (function () {
