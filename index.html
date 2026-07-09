@@ -302,9 +302,9 @@ img { max-width: 100%; }
 /* ═══════════════════════════════════════════════════════════════
    ATELIER 3D — scroll-driven Three.js
 ═══════════════════════════════════════════════════════════════ */
-#atelier { position: relative; height: 420vh; background: var(--dark); }
+#atelier { position: relative; background: var(--dark); }
 .at-sticky {
-  position: sticky; top: 0; height: 100vh; height: 100svh;
+  position: relative; height: 100vh; height: 100svh;
   overflow: hidden;
   background:
     radial-gradient(ellipse at 50% 80%, rgba(201,169,110,0.07) 0%, transparent 55%),
@@ -359,6 +359,17 @@ img { max-width: 100%; }
   border: 1px solid rgba(201,169,110,0.3); padding: 7px 14px;
 }
 .at-counter b { font-weight: 500; }
+.at-launch {
+  pointer-events: none;
+  display: inline-block; margin-top: 18px;
+  padding: 13px 32px; border: 1px solid var(--gold); background: transparent;
+  color: var(--gold); font-family: var(--sans); font-weight: 300;
+  font-size: 0.62rem; letter-spacing: 0.32em; text-indent: 0.32em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.35s, color 0.35s, transform 0.2s;
+}
+.at-launch:hover { background: var(--gold); color: var(--dark); }
+.at-launch:active { transform: scale(0.97); }
+.at-phase.on .at-launch { pointer-events: auto; }
 .at-hint {
   position: absolute; right: 60px; bottom: 76px; z-index: 3;
   font-family: var(--sans); font-weight: 300;
@@ -672,7 +683,6 @@ footer {
   .carousel-btn-next { right: 8px; }
   .c-card { flex: 0 0 224px; }
   .carousel-track { gap: 18px; }
-  #atelier { height: 380vh; }
   .at-header { top: 78px; }
   .at-hud { left: 20px; right: 20px; bottom: 22px; width: auto; max-width: none; padding: 18px 20px 20px; }
   .at-hint { display: none; }
@@ -1056,27 +1066,38 @@ footer {
     </div>
 
     <div class="at-hud">
+      <div class="at-phase on" data-phase="0">
+        <span class="at-num">&#9670;</span>
+        <h3>La machine est <em>prête</em></h3>
+        <p>Une pièce va naître sous vos yeux — de la première couche jusqu'à la gravure laser.</p>
+        <button class="at-launch" id="at-launch" type="button">Lancer l'impression 3D</button>
+      </div>
       <div class="at-phase" data-phase="1">
         <span class="at-num">01</span>
         <h3>L'impression, <em>couche après couche</em></h3>
-        <p>La matière fond et se dépose en spirale continue. Chaque passage ajoute un dixième de millimètre — la pièce s'élève, lentement, précisément.</p>
+        <p>La tête balaye de gauche à droite et dépose la matière fondue. Chaque passage ajoute un dixième de millimètre — la pièce s'élève du plateau.</p>
         <span class="at-counter">Couche <b id="layer-count">0</b> / <b id="layer-total">46</b></span>
       </div>
       <div class="at-phase" data-phase="2">
         <span class="at-num">02</span>
         <h3>La <em>révélation</em></h3>
-        <p>La buse se retire. La pièce refroidit et les couches se soudent en un seul volume — l'objet prend vie.</p>
+        <p>La tête se retire. La pièce refroidit et les couches se soudent en un seul volume — l'objet prend vie.</p>
       </div>
       <div class="at-phase" data-phase="3">
         <span class="at-num">03</span>
         <h3>La <em>gravure laser</em></h3>
         <p>Le laser signe la pièce au dixième de millimètre. C'est ici que l'objet devient unique — le vôtre.</p>
       </div>
+      <div class="at-phase" data-phase="4">
+        <span class="at-num">&#10022;</span>
+        <h3>Pièce <em>terminée</em></h3>
+        <p>Faites-la pivoter pour l'admirer. Chaque création BADSOU naît ainsi — couche après couche, avec précision.</p>
+        <button class="at-launch" id="at-replay" type="button">Relancer l'impression</button>
+      </div>
     </div>
 
     <div class="at-hint">
-      <b>Glissez</b> pour faire pivoter<br>
-      <b>Défilez</b> pour piloter l'atelier
+      <b>Glissez</b> pour faire pivoter la machine
     </div>
 
     <div class="at-rail" aria-hidden="true"><div class="at-rail-fill" id="at-rail-fill"></div></div>
@@ -1136,7 +1157,7 @@ footer {
         <p class="price-category">Collection Bar-le-Duc</p>
         <p class="price-name">Lingot Bar-le-Duc</p>
         <p class="price-amount">10€</p>
-        <p class="price-note">Transi René de Chalon aussi à 10€</p>
+        <p class="price-note">René de Chalon aussi à 10€</p>
       </div>
     </div>
   </div>
@@ -1510,20 +1531,19 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
   rim.position.set(-5, 3.5, -4);
   scene.add(rim);
 
-  /* ── Plateau ── */
+  /* ── Plateau carré (comme une vraie machine) ── */
   const plateMat = new THREE.MeshStandardMaterial({ color: 0x16110c, metalness: 0.85, roughness: 0.4 });
-  const plate = new THREE.Mesh(new THREE.CylinderGeometry(2.3, 2.5, 0.22, 64), plateMat);
-  plate.position.y = -0.11;
+  const plate = new THREE.Mesh(new THREE.BoxGeometry(3.7, 0.18, 3.7), plateMat);
+  plate.position.y = -0.09;
   spinner.add(plate);
-  const plateRing = new THREE.Mesh(
-    new THREE.TorusGeometry(2.3, 0.02, 8, 90),
-    new THREE.MeshBasicMaterial({ color: 0xc9a96e })
-  );
-  plateRing.rotation.x = Math.PI / 2;
-  plateRing.position.y = 0.001;
-  spinner.add(plateRing);
-  const grid = new THREE.PolarGridHelper(2.15, 12, 5, 48, 0x8a6d3b, 0x3a2f20);
-  grid.position.y = 0.005;
+  const edgeMat = new THREE.MeshBasicMaterial({ color: 0xc9a96e });
+  [[0, 1.86, 3.76, 0.05], [0, -1.86, 3.76, 0.05], [1.86, 0, 0.05, 3.76], [-1.86, 0, 0.05, 3.76]].forEach(o => {
+    const s = new THREE.Mesh(new THREE.BoxGeometry(o[2], 0.03, o[3]), edgeMat);
+    s.position.set(o[0], 0.002, o[1]);
+    spinner.add(s);
+  });
+  const grid = new THREE.GridHelper(3.5, 12, 0x8a6d3b, 0x3a2f20);
+  grid.position.y = 0.006;
   grid.material.transparent = true;
   grid.material.opacity = 0.5;
   spinner.add(grid);
@@ -1599,12 +1619,17 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
 
   /* Bobine de filament au sommet */
   const spool = new THREE.Group();
-  const spoolRing = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.13, 12, 40), goldTrim.clone());
-  const spoolHub = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.34, 16), frameMat);
-  spoolHub.rotation.x = Math.PI / 2;
+  const spoolRing = new THREE.Mesh(new THREE.TorusGeometry(0.44, 0.14, 12, 40), goldTrim.clone());
+  spoolRing.rotation.y = Math.PI / 2;               /* axe le long de X */
+  const spoolHub = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.4, 16), frameMat);
+  spoolHub.rotation.z = Math.PI / 2;
   spool.add(spoolRing, spoolHub);
-  spool.position.set(0, TOWER_H + 0.28, RAIL_Z);
+  spool.position.set(3.3, 4.15, RAIL_Z + 0.55);     /* montée sur le côté du châssis */
   machine.add(spool);
+  const spoolArm = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.07, 0.07), frameMat);
+  spoolArm.position.set(3.06, 4.15, RAIL_Z + 0.28);
+  spoolArm.rotation.y = Math.PI / 4;
+  machine.add(spoolArm);
 
   /* Portique X mobile (monte avec les couches) + chariot + bras Z */
   const rail = new THREE.Mesh(new THREE.BoxGeometry(5.7, 0.16, 0.16), frameMat);
@@ -1627,7 +1652,7 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
   root.add(filament);
   const filA = new THREE.Vector3(), filB = new THREE.Vector3(), filC = new THREE.Vector3();
   function updateFilament(headX, headY, headZ) {
-    filA.set(0, TOWER_H - 0.12, RAIL_Z);            /* sortie de bobine */
+    filA.set(3.3, 4.62, RAIL_Z + 0.55);             /* sortie de bobine (haut) */
     filB.set(headX, headY + 0.5, headZ);            /* entrée de tête */
     filC.set((filA.x + filB.x) / 2, Math.min(filA.y, filB.y + 1.2) - 0.45, (filA.z + filB.z) / 2);
     for (let k = 0; k < FIL_PTS; k++) {
@@ -1641,11 +1666,11 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
 
   /* ── Laser ── */
   const laserGroup = new THREE.Group();
-  scene.add(laserGroup);
+  root.add(laserGroup);
   const emitter = new THREE.Mesh(new THREE.OctahedronGeometry(0.13, 0), goldMetal.clone());
   emitter.material.emissive = new THREE.Color(0xc9a96e);
   emitter.material.emissiveIntensity = 0.5;
-  const EMITTER_POS = new THREE.Vector3(2.1, HEIGHT + 1.7, 0.9);
+  const EMITTER_POS = new THREE.Vector3(0, HEIGHT + 1.9, 0);
   emitter.position.copy(EMITTER_POS);
   emitter.scale.setScalar(0.001);
   laserGroup.add(emitter);
@@ -1677,9 +1702,8 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
   }
 
   /* ── Trait gravé : ligne + points, révélés via drawRange ──
-     Convention (dérivée de Ry) : un point local à l'angle α, avec
-     spinner.rotation.y = s, apparaît à l'angle monde (α − s).
-     Contact fixé à l'angle monde 0 → point gravé local α = s.      */
+     Le faisceau orbite autour de la pièce immobile : le point k
+     (angle 2πk/SEG) s'allume quand le laser passe à cet angle.     */
   const SEG = 240;
   const engravePos = new Float32Array(SEG * 3);
   for (let k = 0; k < SEG; k++) {
@@ -1808,9 +1832,19 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
     }, { threshold: 0 }).observe(section);
   }
 
+  /* ── État de la démonstration (pilotée par le bouton) ── */
+  const DURATION = 26; /* secondes pour la séquence complète */
+  let p = 0, playing = false, done = false;
+  function startPrint() {
+    p = REDUCED ? 1 : 0;
+    playing = true; done = false;
+    lastLayerShown = -1;
+  }
+  document.getElementById('at-launch').addEventListener('click', startPrint);
+  document.getElementById('at-replay').addEventListener('click', startPrint);
+
   /* ── Boucle ── */
   const clock = new THREE.Clock();
-  const tmpV = new THREE.Vector3();
 
   function tick() {
     if (!sectionVisible) return;
@@ -1818,16 +1852,17 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
     const dt = Math.min(clock.getDelta(), 0.05);
     const time = clock.elapsedTime;
 
-    /* Progression de scroll dans la section */
-    const rect = section.getBoundingClientRect();
-    const total = rect.height - window.innerHeight;
-    const p = total > 0 ? clamp(-rect.top / total, 0, 1) : 0;
+    /* Progression temporelle de la séquence */
+    if (playing) {
+      p = Math.min(p + dt / DURATION, 1);
+      if (p >= 1) { playing = false; done = true; }
+    }
     railFill.style.transform = 'scaleY(' + p + ')';
 
-    /* Sous-progressions */
     const printP = clamp(p / PRINT_END, 0, 1);
     const coolP = clamp((p - PRINT_END) / (COOL_END - PRINT_END), 0, 1);
     const laserP = clamp((p - COOL_END) / (1 - COOL_END), 0, 1);
+    const idle = !playing && !done && p === 0;
 
     /* ── Couches visibles ── */
     const layerFloat = printP * LAYERS;
@@ -1845,16 +1880,25 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
       layerCountEl.textContent = shownLayer;
     }
 
-    /* ── Buse : spirale continue (mode vase) ── */
-    const printing = p < PRINT_END;
-    const nozzleAngle = printP * Math.PI * 26; /* 13 tours sur toute l'impression */
+    /* ── Tête : balayage gauche ↔ droite qui dépose les couches ── */
+    const printing = playing && p < PRINT_END;
     const nozzleT = clamp(layerFloat / LAYERS, 0, 1);
     const nR = radiusAt(nozzleT);
-    let nY = layerFloat * LAYER_H + 0.145;
-    if (!printing) nY = Math.min(nY + smooth(coolP) * 2.4, 4.55); /* la tête se gare en haut */
-    const nA = nozzleAngle;
-    nozzle.position.set(Math.cos(nA) * nR, nY, Math.sin(nA) * nR);
-    const nozzleFade = printing ? 1 : clamp(1 - coolP * 1.4, 0, 1);
+    let nY, hx, hz;
+    if (idle) {
+      nY = 4.35; hx = 0; hz = 0.3; /* tête garée en haut, machine prête */
+    } else {
+      nY = layerFloat * LAYER_H + 0.145;
+      hx = Math.sin(printP * Math.PI * 68) * nR * 0.92; /* balayage X rapide */
+      hz = Math.sin(printP * Math.PI * 11) * nR * 0.55; /* dérive Y lente */
+      if (p >= PRINT_END) { /* retrait : la tête remonte se garer */
+        nY = Math.min(nY + smooth(coolP) * 2.4, 4.55);
+        hx = lerp(hx, 0, smooth(coolP));
+        hz = lerp(hz, 0.3, smooth(coolP));
+      }
+    }
+    nozzle.position.set(hx, nY, hz);
+    const nozzleFade = printing ? 1 : idle ? 0 : clamp(1 - coolP * 1.4, 0, 1);
     tipGlow.material.opacity = nozzleFade * (0.75 + 0.25 * Math.sin(time * 14));
     nozzleLight.intensity = printing ? (1.1 + 0.3 * Math.sin(time * 11)) : nozzleFade;
 
@@ -1868,9 +1912,9 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
 
     /* Filament + bobine : actifs pendant l'impression */
     updateFilament(nozzle.position.x, gantryY, nozzle.position.z);
-    filMat.opacity = printing ? 0.85 : nozzleFade * 0.85;
+    filMat.opacity = printing ? 0.85 : idle ? 0.5 : nozzleFade * 0.85;
     filament.visible = filMat.opacity > 0.02;
-    if (printing) spool.rotation.z -= dt * 1.4;
+    if (printing) spool.rotation.x -= dt * 1.4;
 
     /* ── Refroidissement : pulsation dorée globale ── */
     if (coolP > 0 && laserP === 0) {
@@ -1878,12 +1922,10 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
       for (let i = 0; i < LAYERS; i++) layers[i].material.emissiveIntensity = pulse * 0.4;
     }
 
-    /* ── Gravure laser ── */
+    /* ── Gravure laser : le faisceau orbite autour de la pièce ── */
     const lasering = laserP > 0 && laserP < 1;
-    const spin = laserP * Math.PI * 2; /* un tour complet de plateau */
-    spinner.rotation.y = spin;
-    /* Le drag revient doucement de face pendant la gravure */
-    if (laserP > 0) rotTarget = lerp(rotTarget, 0, 0.06);
+    const th = laserP * Math.PI * 2;
+    CONTACT.set(Math.cos(th) * R_ENGRAVE, ENGRAVE_Y, Math.sin(th) * R_ENGRAVE);
 
     emitter.scale.setScalar(lerp(emitter.scale.x, laserP > 0 ? 1 : 0.001, 0.12));
     emitter.rotation.y = time * 0.8;
@@ -1921,7 +1963,7 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
       sparkGeo.attributes.position.needsUpdate = true;
     }
 
-    /* Trait gravé révélé (déterministe au scroll, avant/arrière) */
+    /* Trait gravé révélé au fil de l'orbite du faisceau */
     const drawCount = Math.floor(laserP * SEG);
     engraveLine.geometry.setDrawRange(0, drawCount);
     engravePts.geometry.setDrawRange(0, drawCount);
@@ -1933,7 +1975,7 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
     }
 
     /* ── Rotation utilisateur + auto-rotation ── */
-    if (!dragging && !REDUCED && laserP === 0 && performance.now() - lastDragTime > 2500) {
+    if (!dragging && !REDUCED && performance.now() - lastDragTime > 2500) {
       rotTarget += dt * 0.12;
     }
     rotCurrent = lerp(rotCurrent, rotTarget, 0.08);
@@ -1948,9 +1990,11 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
     updateCamera(p, mx, my);
 
     /* ── HUD phases ── */
-    if (p < PRINT_END) setPhase(0);
-    else if (p < COOL_END) setPhase(1);
-    else setPhase(2);
+    if (idle) setPhase(0);
+    else if (done) setPhase(4);
+    else if (p < PRINT_END) setPhase(1);
+    else if (p < COOL_END) setPhase(2);
+    else setPhase(3);
 
     renderer.render(scene, camera);
   }
