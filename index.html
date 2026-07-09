@@ -190,7 +190,7 @@ img { max-width: 100%; }
   position: relative;
   font-family: var(--serif); font-weight: 600;
   font-size: clamp(3.2rem, 9.5vw, 7.2rem);
-  letter-spacing: 0.14em; text-indent: 0.14em;
+  letter-spacing: 0.055em; text-indent: 0.055em;
   line-height: 1; margin: 0;
   display: flex; align-items: baseline;
 }
@@ -216,26 +216,37 @@ img { max-width: 100%; }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 .hw-hat {
-  position: absolute; top: -0.3em; left: 50%; width: 0.66em; height: auto;
-  color: var(--gold-light);
+  position: absolute; top: -0.42em; left: 52%; width: 0.88em; height: auto;
   filter: drop-shadow(0 0 10px rgba(255,247,226,0.45));
   opacity: 0;
-  transform: translate(-50%, -1.2em) rotate(20deg);
-  animation: hatDrop 0.9s cubic-bezier(0.34, 1.4, 0.64, 1) 1.7s forwards;
+  transform: translate(-50%, -1.2em) rotate(-18deg);
+  animation: hatDrop 0.9s cubic-bezier(0.34, 1.4, 0.64, 1) 2.15s forwards;
 }
-.hw-hat path, .hw-hat rect { fill: currentColor; }
 @keyframes hatDrop {
-  0%   { opacity: 0; transform: translate(-50%, -1.2em) rotate(20deg); }
-  55%  { opacity: 1; transform: translate(-50%, 0.07em) rotate(-11deg); }
-  75%  { transform: translate(-50%, -0.06em) rotate(-4deg); }
-  100% { opacity: 1; transform: translate(-50%, 0) rotate(-8deg); }
+  0%   { opacity: 0; transform: translate(-50%, -1.2em) rotate(-18deg); }
+  55%  { opacity: 1; transform: translate(-50%, 0.07em) rotate(11deg); }
+  75%  { transform: translate(-50%, -0.05em) rotate(4deg); }
+  100% { opacity: 1; transform: translate(-50%, 0) rotate(8deg); }
+}
+.hw-cane {
+  position: absolute; left: 3%; top: 0.46em; width: 0.36em; height: auto;
+  z-index: -1; /* la canne se glisse derrière les traits du D */
+  filter: drop-shadow(0 0 8px rgba(255,247,226,0.3));
+  opacity: 0;
+  transform: translateY(-1.1em);
+  animation: caneSlide 0.75s cubic-bezier(0.34, 1.3, 0.64, 1) 1.55s forwards;
+}
+@keyframes caneSlide {
+  0%   { opacity: 0; transform: translateY(-1.1em); }
+  60%  { opacity: 1; transform: translateY(0.06em); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 .hero-tagline {
   font-family: var(--serif); font-style: italic; font-weight: 400;
   font-size: clamp(1.05rem, 2.2vw, 1.5rem); letter-spacing: 0.06em;
-  color: var(--gold-light); margin-top: 30px;
+  color: var(--gold-light); margin-top: clamp(48px, 7vw, 86px);
   text-shadow: 0 2px 18px rgba(0,0,0,0.7);
-  opacity: 0; animation: fadeUp 1s var(--ease-out) 2.2s forwards;
+  opacity: 0; animation: fadeUp 1s var(--ease-out) 2.9s forwards;
 }
 .hero-btn {
   display: inline-block; margin-top: 38px;
@@ -247,7 +258,7 @@ img { max-width: 100%; }
   text-decoration: none; cursor: pointer;
   position: relative; overflow: hidden;
   transition: color 0.45s var(--ease), border-color 0.45s;
-  opacity: 0; animation: fadeUp 1s var(--ease-out) 2.5s forwards;
+  opacity: 0; animation: fadeUp 1s var(--ease-out) 3.2s forwards;
 }
 .hero-btn::before {
   content: ''; position: absolute; inset: 0; background: var(--gold);
@@ -757,7 +768,8 @@ footer {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .reveal, .hero-tagline, .hero-btn, .hw-letter { opacity: 1 !important; transform: none !important; }
-  .hw-hat { opacity: 1 !important; transform: translate(-50%, 0) rotate(-8deg) !important; }
+  .hw-hat { opacity: 1 !important; transform: translate(-50%, 0) rotate(8deg) !important; }
+  .hw-cane { opacity: 1 !important; transform: translateY(0) !important; }
   .hero-stars { display: none; }
   .clip-reveal > i { transform: none !important; }
   .marquee-track { animation: none; }
@@ -804,7 +816,7 @@ footer {
   <div class="hero-stars" id="hero-stars" aria-hidden="true"></div>
   <div class="hero-inner">
     <h1 class="hero-word" aria-label="BADSOU">
-      <span class="hw-letter" style="--i:0" aria-hidden="true">B</span><span class="hw-letter" style="--i:1" aria-hidden="true">A</span><span class="hw-letter" style="--i:2" aria-hidden="true">D</span><span class="hw-letter" style="--i:3" aria-hidden="true">S</span><span class="hw-letter" style="--i:4" aria-hidden="true">O<svg class="hw-hat" viewBox="0 0 64 40" aria-hidden="true"><path d="M20 3 h24 a2.5 2.5 0 0 1 2.5 2.5 V26 h-29 V5.5 A2.5 2.5 0 0 1 20 3 Z"/><rect x="5" y="26" width="54" height="7.5" rx="3.75"/><rect x="17.5" y="19.5" width="29" height="5" fill="rgba(8,7,5,0.4)"/></svg></span><span class="hw-letter" style="--i:5" aria-hidden="true">U</span>
+      <span class="hw-letter" style="--i:0" aria-hidden="true">B</span><span class="hw-letter" style="--i:1" aria-hidden="true">A</span><span class="hw-letter" style="--i:2" aria-hidden="true">D<svg class="hw-cane" viewBox="0 0 40 150" aria-hidden="true"><defs><linearGradient id="caneGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e8c6"/><stop offset="0.45" stop-color="#d9b878"/><stop offset="1" stop-color="#8a6d3b"/></linearGradient></defs><path d="M31 24 C31 7 11 7 11 22 L11 132 L15 145" fill="none" stroke="url(#caneGold)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="hw-letter" style="--i:3" aria-hidden="true">S</span><span class="hw-letter" style="--i:4" aria-hidden="true">O<svg class="hw-hat" viewBox="0 0 100 66" aria-hidden="true"><defs><linearGradient id="hatGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e8c6"/><stop offset="0.5" stop-color="#d9b878"/><stop offset="1" stop-color="#967540"/></linearGradient></defs><path fill="url(#hatGold)" d="M31 6 Q50 0 69 6 L65 42 L35 42 Z"/><path fill="rgba(8,7,5,0.42)" d="M34.4 34 L65.6 34 L65 42 L35 42 Z"/><path fill="url(#hatGold)" d="M4 48 Q28 40 50 41 Q76 42 97 30 Q92 49 62 52 Q26 55 4 48 Z"/></svg></span><span class="hw-letter" style="--i:5" aria-hidden="true">U</span>
     </h1>
     <p class="hero-tagline">Fabriqué ici, offert partout.</p>
     <a class="hero-btn magnetic" href="#catalogue">Découvrir</a>
