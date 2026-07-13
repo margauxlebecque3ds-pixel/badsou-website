@@ -737,7 +737,8 @@ footer {
   .carousel-btn-next { right: 8px; }
   .c-card { flex: 0 0 224px; }
   .carousel-track { gap: 18px; }
-  .at-header { top: 78px; }
+  .at-header { top: 76px; }
+  .at-header h2 { font-size: clamp(1.3rem, 5.5vw, 1.7rem); }
   .at-hud { left: 20px; right: 20px; bottom: 22px; width: auto; max-width: none; padding: 18px 20px 20px; }
   .at-hint { display: none; }
   .at-rail { right: 10px; height: 140px; }
@@ -747,10 +748,26 @@ footer {
   .at-counter { margin-top: 10px; }
 }
 @media (max-width: 540px) {
-  .c-card { flex: 0 0 190px; }
+  .c-card { flex: 0 0 232px; }
   .carousel-track { gap: 14px; }
   .catalogue-title { font-size: clamp(2.6rem, 11vw, 4.6rem); }
   .contact-links { flex-direction: column; gap: 30px; }
+  .c-card-info { flex-direction: column; align-items: flex-start; gap: 8px; padding: 13px 15px; }
+  .c-card-name { font-size: 0.92rem; }
+  .c-card-price { font-size: 0.58rem; padding: 5px 10px; white-space: normal; line-height: 1.4; }
+  .carousel-cat-header { padding: 0 20px 20px; gap: 12px; flex-wrap: wrap; row-gap: 4px; }
+  .carousel-cat-title { font-size: 1.15rem; }
+  .carousel-cat-count { font-size: 0.52rem; }
+  .carousel-dots { flex-wrap: wrap; row-gap: 6px; padding: 4px 14px 0; }
+  .catalogue-sub { font-size: 0.82rem; padding: 0 10px; }
+  .marquee-item { font-size: 0.78rem; padding: 0 10px; gap: 20px; }
+  .at-hud { left: 14px; right: 14px; bottom: 12px; padding: 13px 15px 15px; }
+  .at-num { display: none; }
+  .at-phase h3 { font-size: 1.02rem; margin-bottom: 5px; }
+  .at-phase p { font-size: 0.79rem; line-height: 1.45; }
+  .at-counter { font-size: 0.52rem; padding: 5px 10px; margin-top: 8px; }
+  .at-launch { padding: 12px 14px; margin-top: 12px; font-size: 0.56rem; }
+  .at-header .section-eyebrow { font-size: 0.52rem; margin-bottom: 8px; }
 }
 
 /* ── REDUCED MOTION ────────────────────────────────────────────── */
@@ -1261,7 +1278,7 @@ footer {
         <span class="cl-value">chez.badsou@gmail.com</span>
       </a>
     </div>
-    <a href="mailto:chez.badsou@gmail.com" class="contact-cta magnetic reveal" style="--d:0.24s">Me contacter</a>
+    <a href="mailto:chez.badsou@gmail.com" class="contact-cta magnetic reveal" style="--d:0.24s">Nous contacter</a>
   </div>
 </section>
 
@@ -1895,6 +1912,14 @@ document.querySelectorAll('.carousel-outer').forEach(initCarousel);
     const t = smooth(b.p === a.p ? 0 : (p - a.p) / (b.p - a.p));
     camPos.set(lerp(a.pos[0], b.pos[0], t) + mx, lerp(a.pos[1], b.pos[1], t) + my, lerp(a.pos[2], b.pos[2], t));
     camLook.set(lerp(a.look[0], b.look[0], t), lerp(a.look[1], b.look[1], t), lerp(a.look[2], b.look[2], t));
+    /* Cadrage responsive : en écran étroit, reculer pour contenir la
+       machine et la remonter dans le cadre (au-dessus du panneau) */
+    const tanH = Math.tan(camera.fov * Math.PI / 360) * camera.aspect;
+    const minZ = Math.min(2.75 / tanH, 18);
+    if (camPos.z < minZ) {
+      camLook.y -= (minZ - camPos.z) * 0.10;
+      camPos.z = minZ;
+    }
     camera.position.copy(camPos);
     camera.lookAt(camLook);
   }
